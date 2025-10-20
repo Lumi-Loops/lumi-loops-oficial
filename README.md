@@ -42,6 +42,11 @@ bun dev              # Development server with Turbopack
 bun build            # Production build
 bun start            # Production server
 
+# Cloudflare Workers Deployment
+bun preview          # Build and preview locally in Workers runtime
+bun deploy           # Build and deploy to Cloudflare Workers
+bun cf-typegen       # Generate Cloudflare environment types
+
 # Code Quality
 bun lint             # Analyze code with ESLint
 bun lint:fix         # Automatically fix problems
@@ -49,6 +54,48 @@ bun format           # Format code with Prettier
 bun format:check     # Verify formatting
 bun type-check       # Verify TypeScript types
 ```
+
+## ☁️ Cloudflare Workers Deployment
+
+This project is configured to deploy on Cloudflare Workers using the `@opennextjs/cloudflare` adapter.
+
+### Prerequisites
+
+1. **Cloudflare Account**: Create a free account at [cloudflare.com](https://cloudflare.com)
+2. **Wrangler Authentication**: Login to Cloudflare via CLI
+   ```bash
+   bunx wrangler login
+   ```
+
+### Deployment Workflow
+
+1. **Local Preview** (recommended before deploying):
+
+   ```bash
+   bun preview
+   ```
+
+   This builds your app and runs it locally in the Workers runtime using `wrangler dev`.
+
+2. **Deploy to Production**:
+   ```bash
+   bun deploy
+   ```
+   Your app will be deployed to `https://lumiloops-oficial.workers.dev` or your custom domain.
+
+### Configuration Files
+
+- **`wrangler.toml`**: Cloudflare Workers configuration (name, compatibility settings, assets)
+- **`open-next.config.ts`**: OpenNext adapter configuration (caching, routing)
+
+### Important Notes
+
+- The app runs in the **workerd runtime** (not Node.js) on Cloudflare Workers
+- Uses **nodejs_compat** compatibility flag for Node.js APIs
+- Static assets are served from the `.open-next/assets` directory
+- **Turbopack is NOT compatible** with Cloudflare deployment - only used for `dev` mode
+- Production builds use the standard webpack bundler for Cloudflare compatibility
+- For more details, see [Cloudflare Next.js Documentation](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/)
 
 ## 🤝 Contributing
 
