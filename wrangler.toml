@@ -1,0 +1,19 @@
+# Cloudflare Workers configuration for Lumi Loops
+# Documentation: https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "lumiloops-oficial"
+main = ".open-next/worker.js"
+compatibility_date = "2025-03-25"
+compatibility_flags = ["nodejs_compat"]
+
+# Workers Assets configuration
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Environment configuration for staging (optional)
+# Uncomment and configure if you need a staging environment
+# [env.staging]
+# name = "lumiloops-oficial-staging"
+# compatibility_date = "2025-03-25"
+# compatibility_flags = ["nodejs_compat"]
