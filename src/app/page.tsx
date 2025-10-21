@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/landing/hero-section";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { WhyChooseUs } from "@/components/landing/why-choose-us";
+import { BenefitsSection } from "@/components/landing/benefits-section";
 
 export default function Home() {
   return (
@@ -24,6 +25,9 @@ export default function Home() {
 
         {/* Why Choose Us Section */}
         <WhyChooseUs />
+
+        {/* Benefits Section */}
+        <BenefitsSection />
 
         {/* More sections will be added here */}
       </main>
