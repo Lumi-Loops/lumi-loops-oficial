@@ -8,6 +8,7 @@ import { BenefitsSection } from "@/components/landing/benefits-section";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { ContactSection } from "@/components/landing/contact-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { FinalCTASection } from "@/components/landing/final-cta-section";
 import { SocialPlatformsCarousel } from "@/components/landing/social-platforms-carousel";
 import {
   PortfolioVideoShowcase,
@@ -111,6 +112,9 @@ export default function Home() {
 
         {/* Contact Section */}
         <ContactSection />
+
+        {/* Final CTA Section */}
+        <FinalCTASection />
       </main>
 
       {/* Footer */}
