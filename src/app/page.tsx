@@ -8,6 +8,11 @@ import { BenefitsSection } from "@/components/landing/benefits-section";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { ContactSection } from "@/components/landing/contact-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { SocialPlatformsCarousel } from "@/components/landing/social-platforms-carousel";
+import {
+  PortfolioVideoShowcase,
+  portfolioData,
+} from "@/components/landing/portfolio-video-showcase";
 import { ZoomParallax } from "@/components/zoom-parallax";
 
 // Datos para el componente ZoomParallax
@@ -86,11 +91,14 @@ export default function Home() {
         {/* Why Choose Us Section */}
         <WhyChooseUs />
 
-        {/* TODO: Portfolio Showcase Section */}
-        {/* <PortfolioVideoShowcase /> */}
+        {/* Portfolio Showcase Section */}
+        <PortfolioVideoShowcase
+          portfolioItems={portfolioData}
+          autoplay={true}
+        />
 
-        {/* TODO: Social Platforms Carousel */}
-        {/* <SocialPlatformsCarousel /> */}
+        {/* Social Platforms Carousel */}
+        <SocialPlatformsCarousel />
 
         {/* Benefits Section */}
         <BenefitsSection />
