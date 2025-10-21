@@ -13,6 +13,7 @@ import {
   ArrowRight,
   Facebook,
   Instagram,
+  Sparkles,
   Volume2,
   VolumeX,
   Youtube,
@@ -242,10 +243,23 @@ export const PortfolioVideoShowcase = ({
             transition={{ duration: 0.6 }}
             className="mb-12 text-center"
           >
-            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
+            <motion.div
+              className="bg-primary/10 border-primary/20 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Sparkles className="text-primary h-4 w-4" />
+              <span className="text-primary text-sm font-medium">
+                Our Portfolio
+              </span>
+            </motion.div>
+
+            <h2 className="gradient-text-primary mb-4 text-4xl font-bold md:text-5xl">
               Our Work in Action
             </h2>
-            <p className="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
               Real projects, real results. See how we transform ideas into
               scroll-stopping content.
             </p>

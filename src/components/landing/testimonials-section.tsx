@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { Sparkles, Star } from "lucide-react";
 
 import { TestimonialsColumn } from "@/components/testimonials-columns-1";
 
@@ -119,6 +119,19 @@ export function TestimonialsSection() {
         >
           {/* Section Header */}
           <motion.div variants={fadeInUp} className="mb-16 text-center">
+            <motion.div
+              className="bg-primary/10 border-primary/20 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Sparkles className="text-primary h-4 w-4" />
+              <span className="text-primary text-sm font-medium">
+                Client Reviews
+              </span>
+            </motion.div>
+
             <div className="mb-4 flex items-center justify-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -129,11 +142,11 @@ export function TestimonialsSection() {
             </div>
             <h2
               id="testimonials-title"
-              className="mb-6 text-4xl font-bold tracking-tight md:text-5xl"
+              className="gradient-text-primary mb-4 text-4xl font-bold md:text-5xl"
             >
               Loved by Creators & Brands
             </h2>
-            <p className="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
               Don&apos;t just take our word for it. Here&apos;s what real
               clients say about working with Lumi Loops.
             </p>

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Ban, Clapperboard } from "lucide-react";
+import { Ban, Clapperboard, Sparkles } from "lucide-react";
 
 // Animation variants
 const fadeInUp = {
@@ -114,13 +114,26 @@ export function WhyChooseUs() {
         >
           {/* Section Header */}
           <motion.div variants={fadeInUp} className="mb-16 text-center">
+            <motion.div
+              className="bg-primary/10 border-primary/20 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Sparkles className="text-primary h-4 w-4" />
+              <span className="text-primary text-sm font-medium">
+                Why Choose Us
+              </span>
+            </motion.div>
+
             <h2
               id="why-choose-us-title"
-              className="mb-6 text-4xl font-bold tracking-tight md:text-5xl"
+              className="gradient-text-primary mb-4 text-4xl font-bold md:text-5xl"
             >
               Why Choose Lumi Loops?
             </h2>
-            <p className="text-muted-foreground mx-auto max-w-3xl text-xl leading-relaxed">
+            <p className="text-muted-foreground mx-auto max-w-3xl text-lg leading-relaxed">
               You&apos;re not just getting AI — you&apos;re getting a creative
               partner who understands your brand, your goals, and what makes
               your audience click &quot;share.&quot;

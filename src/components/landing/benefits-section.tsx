@@ -7,6 +7,7 @@ import {
   Heart,
   Palette,
   Smartphone,
+  Sparkles,
   Zap,
 } from "lucide-react";
 
@@ -126,13 +127,26 @@ export function BenefitsSection() {
         >
           {/* Section Header */}
           <motion.div variants={fadeInUp} className="mb-16 text-center">
+            <motion.div
+              className="bg-primary/10 border-primary/20 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Sparkles className="text-primary h-4 w-4" />
+              <span className="text-primary text-sm font-medium">
+                Key Benefits
+              </span>
+            </motion.div>
+
             <h2
               id="benefits-title"
-              className="mb-6 text-4xl font-bold tracking-tight md:text-5xl"
+              className="gradient-text-primary mb-4 text-4xl font-bold md:text-5xl"
             >
               Why Clients Love Working With Us
             </h2>
-            <p className="text-muted-foreground mx-auto max-w-3xl text-xl leading-relaxed">
+            <p className="text-muted-foreground mx-auto max-w-3xl text-lg leading-relaxed">
               Because we take the headache out of video creation — and replace
               it with scroll-stopping, brand-aligned videos that actually
               convert.

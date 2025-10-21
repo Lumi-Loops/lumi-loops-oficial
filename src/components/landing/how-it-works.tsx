@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight, Sparkles } from "lucide-react";
 
 import BentoGrid1 from "../mvpblocks/bento-grid-1";
 
@@ -130,16 +130,29 @@ export function HowItWorks() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Section Header */}
-          <motion.div variants={fadeInUp} className="mb-16">
+          <motion.div variants={fadeInUp} className="mb-16 text-center">
+            <motion.div
+              className="bg-primary/10 border-primary/20 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Sparkles className="text-primary h-4 w-4" />
+              <span className="text-primary text-sm font-medium">
+                Simple Process
+              </span>
+            </motion.div>
+
             <h2
               id="how-it-works-title"
-              className="mb-6 text-4xl font-bold tracking-tight md:text-5xl"
+              className="gradient-text-primary mb-4 text-4xl font-bold md:text-5xl"
             >
               How It Works
             </h2>
-            <p className="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed">
+            <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
               Get scroll-stopping videos — without touching a single editing
-              tool.
+              tool. Here&apos;s how simple it is.
             </p>
           </motion.div>
 
