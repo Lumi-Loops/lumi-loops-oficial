@@ -280,3 +280,40 @@
     animation: none !important;
   }
 }
+
+/* ============================================
+   Gradient Text Utilities
+   ============================================ */
+
+.gradient-text-main {
+  background: linear-gradient(
+    to right,
+    oklch(0.7227 0.192 149.5793),
+    oklch(0.7729 0.1535 163.2231)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-primary {
+  background: linear-gradient(
+    to right,
+    oklch(0.7227 0.192 149.5793),
+    oklch(0.9505 0.0507 163.0508)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-accent {
+  background: linear-gradient(
+    to right,
+    oklch(0.7729 0.1535 163.2231),
+    oklch(0.9505 0.0507 163.0508)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
