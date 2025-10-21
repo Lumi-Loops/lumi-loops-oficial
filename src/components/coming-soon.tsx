@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -35,11 +36,26 @@ export function ComingSoon() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 min-h-screen flex flex-col"
+      >
         {/* Header */}
-        <header className="p-6">
+        <motion.header
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="p-6"
+        >
           <div className="container mx-auto flex justify-between items-center">
-            <div className="flex items-center">
+            <motion.div
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex items-center"
+            >
               <Image
                 src="/logo/lumiloops-logo-name.png"
                 alt="Lumi Loops Logo"
@@ -48,8 +64,13 @@ export function ComingSoon() {
                 priority
                 className="drop-shadow-lg"
               />
-            </div>
-            <div className="flex items-center gap-4">
+            </motion.div>
+            <motion.div
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex items-center gap-4"
+            >
               <Badge
                 variant="secondary"
                 className="bg-black/40 backdrop-blur-md text-white border-white/20 drop-shadow-lg"
@@ -57,123 +78,176 @@ export function ComingSoon() {
                 <Calendar className="mr-2 h-4 w-4" />
                 Coming 2025
               </Badge>
-            </div>
+            </motion.div>
           </div>
-        </header>
+        </motion.header>
 
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center p-6">
           <div className="container mx-auto max-w-4xl text-center">
             {/* Hero Section */}
-            <div className="mb-12">
-              <div className="flex justify-center mb-6">
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mb-12"
+            >
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="flex justify-center mb-6"
+              >
                 <div className="relative">
                   <Sparkles className="h-16 w-16 text-primary animate-pulse" />
                   <div className="absolute -top-2 -right-2">
                     <Video className="h-8 w-8 text-yellow-400 animate-bounce" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">
+              <motion.h1
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight drop-shadow-lg"
+              >
                 Professional Videos
                 <span className="text-primary dark:text-green-400 block drop-shadow-lg">
                   Made Simple
                 </span>
                 Coming Soon
-              </h1>
+              </motion.h1>
 
-              <p className="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.0 }}
+                className="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
+              >
                 AI-assisted video creation platform. Professional, fast, and
                 affordable videos without the complexity.
-              </p>
+              </motion.p>
 
               {/* Feature Pills */}
-              <div className="flex flex-wrap justify-center gap-4 mb-8">
-                <Badge
-                  variant="outline"
-                  className="bg-black/30 backdrop-blur-md text-white border-white/30 px-4 py-2 drop-shadow-md"
-                >
-                  <PlayCircle className="mr-2 h-4 w-4" />
-                  AI-Assisted Creation
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="bg-black/30 backdrop-blur-md text-white border-white/30 px-4 py-2 drop-shadow-md"
-                >
-                  <Zap className="mr-2 h-4 w-4" />
-                  Fast & Professional
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="bg-black/30 backdrop-blur-md text-white border-white/30 px-4 py-2 drop-shadow-md"
-                >
-                  <Users className="mr-2 h-4 w-4" />
-                  For Creators & Brands
-                </Badge>
-              </div>
-            </div>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+                className="flex flex-wrap justify-center gap-4 mb-8"
+              >
+                {[
+                  {
+                    icon: PlayCircle,
+                    text: "AI-Assisted Creation",
+                    delay: 0.1,
+                  },
+                  { icon: Zap, text: "Fast & Professional", delay: 0.2 },
+                  { icon: Users, text: "For Creators & Brands", delay: 0.3 },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div
+                      key={item.text}
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.6, delay: 1.2 + item.delay }}
+                    >
+                      <Badge
+                        variant="outline"
+                        className="bg-black/30 backdrop-blur-md text-white border-white/30 px-4 py-2 drop-shadow-md"
+                      >
+                        <Icon className="mr-2 h-4 w-4" />
+                        {item.text}
+                      </Badge>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </motion.div>
 
             {/* Features Grid */}
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="bg-black/30 backdrop-blur-md border-white/20 drop-shadow-xl">
-                <CardHeader className="text-center">
-                  <div className="w-12 h-12 bg-primary/30 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Wand2 className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-white">
-                    AI-Powered Creation
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90 text-sm">
-                    Get professional video content quickly with our intelligent
-                    AI assistance
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-black/30 backdrop-blur-md border-white/20 drop-shadow-xl">
-                <CardHeader className="text-center">
-                  <div className="w-12 h-12 bg-primary/30 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Video className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-white">Custom Editing</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90 text-sm">
-                    Professional editing and customization services to fit your
-                    brand perfectly
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-black/30 backdrop-blur-md border-white/20 drop-shadow-xl">
-                <CardHeader className="text-center">
-                  <div className="w-12 h-12 bg-primary/30 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-white">For Everyone</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90 text-sm">
-                    Perfect for influencers, businesses, and marketing agencies
-                    seeking impactful content
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <motion.div
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.6 }}
+              className="grid md:grid-cols-3 gap-6"
+            >
+              {[
+                {
+                  icon: Wand2,
+                  title: "AI-Powered Creation",
+                  description:
+                    "Get professional video content quickly with our intelligent AI assistance",
+                  delay: 0.1,
+                },
+                {
+                  icon: Video,
+                  title: "Custom Editing",
+                  description:
+                    "Professional editing and customization services to fit your brand perfectly",
+                  delay: 0.2,
+                },
+                {
+                  icon: Users,
+                  title: "For Everyone",
+                  description:
+                    "Perfect for influencers, businesses, and marketing agencies seeking impactful content",
+                  delay: 0.3,
+                },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 1.8 + item.delay }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <Card className="bg-black/30 backdrop-blur-md border-white/20 drop-shadow-xl h-full">
+                      <CardHeader className="text-center">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{
+                            duration: 0.4,
+                            delay: 2.0 + item.delay,
+                          }}
+                          className="w-12 h-12 bg-primary/30 rounded-lg flex items-center justify-center mx-auto mb-4"
+                        >
+                          <Icon className="h-6 w-6 text-primary" />
+                        </motion.div>
+                        <CardTitle className="text-white">
+                          {item.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-white/90 text-sm">
+                          {item.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </div>
         </main>
 
         {/* Footer */}
-        <footer className="p-6 text-center">
+        <motion.footer
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 2.5 }}
+          className="p-6 text-center"
+        >
           <p className="text-white/80 text-sm drop-shadow-md">
             © 2025 Lumi Loops. Professional video creation made simple for
             creators and brands worldwide.
           </p>
-        </footer>
-      </div>
+        </motion.footer>
+      </motion.div>
     </div>
   );
 }
