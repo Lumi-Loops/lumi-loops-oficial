@@ -26,15 +26,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Build with OpenNext (generates .open-next)
+        run: bunx opennextjs-cloudflare build
+
       - name: Deploy to Cloudflare (dev or prod)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # OpenNext deploy also performs the correct build that generates `.open-next`
+          # Run Wrangler inside the action container (bun is not available there)
           command: >-
-            bunx opennextjs-cloudflare deploy
-            --env=${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+            deploy --env=${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
 
   preview:
     if: github.event_name == 'pull_request'
