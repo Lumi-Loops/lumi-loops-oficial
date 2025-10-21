@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/landing/hero-section";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { WhyChooseUs } from "@/components/landing/why-choose-us";
 import { BenefitsSection } from "@/components/landing/benefits-section";
+import { PricingSection } from "@/components/landing/pricing-section";
 
 export default function Home() {
   return (
@@ -28,6 +29,9 @@ export default function Home() {
 
         {/* Benefits Section */}
         <BenefitsSection />
+
+        {/* Pricing Section */}
+        <PricingSection />
 
         {/* More sections will be added here */}
       </main>
