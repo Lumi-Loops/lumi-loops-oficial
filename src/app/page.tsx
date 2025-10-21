@@ -7,6 +7,7 @@ import { WhyChooseUs } from "@/components/landing/why-choose-us";
 import { BenefitsSection } from "@/components/landing/benefits-section";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { ContactSection } from "@/components/landing/contact-section";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { ZoomParallax } from "@/components/zoom-parallax";
 
 // Datos para el componente ZoomParallax
@@ -97,8 +98,8 @@ export default function Home() {
         {/* Pricing Section */}
         <PricingSection />
 
-        {/* TODO: Testimonials Section */}
-        {/* <TestimonialsSection /> */}
+        {/* Testimonials Section */}
+        <TestimonialsSection />
 
         {/* Contact Section */}
         <ContactSection />
