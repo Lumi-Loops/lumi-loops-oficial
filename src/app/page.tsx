@@ -2,6 +2,7 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/landing/hero-section";
+import { HowItWorks } from "@/components/landing/how-it-works";
 
 export default function Home() {
   return (
@@ -16,6 +17,9 @@ export default function Home() {
       <main className="min-h-screen">
         {/* Hero Section */}
         <HeroSection />
+
+        {/* How It Works Section */}
+        <HowItWorks />
 
         {/* More sections will be added here */}
       </main>
