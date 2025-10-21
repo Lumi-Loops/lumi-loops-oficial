@@ -13,7 +13,22 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    const newTheme = theme === "light" ? "dark" : "light";
+
+    // Check if View Transitions API is supported
+    if (
+      typeof document !== "undefined" &&
+      "startViewTransition" in document &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      // Use View Transitions API for smooth animated transition
+      (document as any).startViewTransition(() => {
+        setTheme(newTheme);
+      });
+    } else {
+      // Fallback for browsers that don't support View Transitions
+      setTheme(newTheme);
+    }
   };
 
   if (!mounted) {
