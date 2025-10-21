@@ -11,9 +11,13 @@ compatibility_flags = ["nodejs_compat"]
 directory = ".open-next/assets"
 binding = "ASSETS"
 
-# Environment configuration for staging (optional)
-# Uncomment and configure if you need a staging environment
-# [env.staging]
-# name = "lumiloops-oficial-staging"
-# compatibility_date = "2025-03-25"
-# compatibility_flags = ["nodejs_compat"]
+# Environments
+# Dev environment (separate Worker for previews/QA)
+[env.dev]
+name = "lumiloops-oficial-dev"
+vars = { ENV = "development" }
+
+# Prod environment (stable)
+[env.prod]
+name = "lumiloops-oficial"
+vars = { ENV = "production" }
