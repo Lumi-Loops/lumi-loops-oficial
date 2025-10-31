@@ -14,6 +14,7 @@ import {
   portfolioData,
   PortfolioVideoShowcase,
 } from "@/components/landing/portfolio-video-showcase";
+import { VideoSimulatorSection } from "@/components/landing/video-simulator-section";
 import { ZoomParallax } from "@/components/zoom-parallax";
 
 // Datos para el componente ZoomParallax
@@ -102,6 +103,9 @@ export default function Home() {
           portfolioItems={portfolioData}
           autoplay={true}
         />
+
+        {/* Video Simulator Section */}
+        <VideoSimulatorSection />
 
         {/* Social Platforms Carousel */}
         <SocialPlatformsCarousel />
