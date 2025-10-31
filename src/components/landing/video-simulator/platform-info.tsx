@@ -147,16 +147,11 @@ const DetailItem: React.FC<{
   title: string;
   value: string;
   color?: string;
-}> = ({ icon, title, value, color }) => (
+}> = ({ icon, title, value }) => (
   <div className="flex flex-col gap-2">
-    <div
-      className="flex items-center gap-2"
-      style={color ? { color } : undefined}
-    >
+    <div className="flex items-center gap-2 text-primary">
       {icon}
-      <span className="text-xs font-semibold text-muted-foreground">
-        {title}
-      </span>
+      <span className="text-xs font-semibold">{title}</span>
     </div>
     <p className="text-sm font-medium text-foreground">{value}</p>
   </div>
@@ -192,37 +187,31 @@ export const PlatformInfo: React.FC<{ platform: SocialPlatform }> = ({
           icon={<Monitor className="w-5 h-5" />}
           title="Interface Type"
           value={details.interfaceType}
-          color={platformColors[platform]}
         />
         <DetailItem
           icon={<Maximize2 className="w-5 h-5" />}
           title="Typical Resolution"
           value={details.resolution}
-          color={platformColors[platform]}
         />
         <DetailItem
           icon={<FileText className="w-5 h-5" />}
           title="Aspect Ratio"
           value={details.aspectRatio}
-          color={platformColors[platform]}
         />
         <DetailItem
           icon={<FileText className="w-5 h-5" />}
           title="Formats"
           value={details.formats}
-          color={platformColors[platform]}
         />
         <DetailItem
           icon={<HardDrive className="w-5 h-5" />}
           title="Max Size / Length"
           value={details.maxSize}
-          color={platformColors[platform]}
         />
         <DetailItem
           icon={<Monitor className="w-5 h-5" />}
           title="Render Style"
           value={details.renderStyle}
-          color={platformColors[platform]}
         />
       </div>
     </div>
