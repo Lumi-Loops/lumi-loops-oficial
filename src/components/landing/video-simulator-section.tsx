@@ -183,17 +183,15 @@ export function VideoSimulatorSection() {
                     <motion.button
                       key={p}
                       onClick={() => setPlatform(p)}
-                      whileHover={{ scale: 1.15 }}
-                      whileTap={{ scale: 0.95 }}
                       style={
                         platform === p
                           ? { color: platformColors[p] }
-                          : undefined
+                          : { color: "var(--color-primary)" }
                       }
                       className={`transition-all duration-300 ${
                         platform === p
                           ? "opacity-100"
-                          : "text-muted-foreground hover:text-primary opacity-60 hover:opacity-80"
+                          : "opacity-60 hover:opacity-80"
                       }`}
                       title={platformLabels[p]}
                     >
