@@ -20,14 +20,14 @@ export function ContactSection() {
           playsInline
           className="h-full w-full object-cover"
         >
-          <source src="/videos/background-video/contact.mp4" type="video/mp4" />
+          <source src="/videos/contact/contact.mp4" type="video/mp4" />
         </video>
         {/* Light overlay for better contrast */}
         <div className="absolute inset-0 bg-black/30" />
 
         {/* Gradient fade overlays - top and bottom (extended) */}
-        <div className="pointer-events-none absolute top-0 left-0 h-48 w-full bg-gradient-to-b from-background via-background/80 to-transparent" />
-        <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-full bg-gradient-to-t from-background via-background/90 to-transparent" />
+        <div className="pointer-events-none absolute top-0 left-0 h-48 w-full bg-linear-to-b from-background via-background/80 to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-full bg-linear-to-t from-background via-background/90 to-transparent" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4">
@@ -87,11 +87,11 @@ export function ContactSection() {
                   Get Your Custom Proposal
                 </h3>
                 <div className="mx-auto flex items-center gap-4">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/30 to-white/30" />
+                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-white/30 to-white/30" />
                   <span className="text-sm font-medium text-white/70">
                     Fill in your details
                   </span>
-                  <div className="h-px flex-1 bg-gradient-to-l from-transparent via-white/30 to-white/30" />
+                  <div className="h-px flex-1 bg-linear-to-l from-transparent via-white/30 to-white/30" />
                 </div>
               </div>
 

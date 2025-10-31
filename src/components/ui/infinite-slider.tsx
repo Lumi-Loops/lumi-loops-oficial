@@ -56,7 +56,7 @@ export function InfiniteSlider({
     } else {
       controls = animate(translation, [from, to], {
         ease: "linear",
-        duration: duration,
+        duration,
         repeat: Infinity,
         repeatType: "loop",
         repeatDelay: 0,

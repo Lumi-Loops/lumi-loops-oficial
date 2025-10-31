@@ -11,57 +11,57 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { FinalCTASection } from "@/components/landing/final-cta-section";
 import { SocialPlatformsCarousel } from "@/components/landing/social-platforms-carousel";
 import {
-  PortfolioVideoShowcase,
   portfolioData,
+  PortfolioVideoShowcase,
 } from "@/components/landing/portfolio-video-showcase";
 import { ZoomParallax } from "@/components/zoom-parallax";
 
 // Datos para el componente ZoomParallax
-const parallaxImages = [
+const parallaxVideos = [
   {
-    src: "https://i.pinimg.com/1200x/a5/a2/b1/a5a2b1c1711119018a3fb2335181c2ae.jpg",
+    src: "/videos/parallax/intelligent-editing.mp4",
     alt: "Video editing",
     title: "Intelligent Editing",
     description: "Intelligent AI that optimizes every frame automatically",
     orientation: "horizontal" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=700&q=80",
+    src: "/videos/parallax/ai-processing.mp4",
     alt: "AI Processing",
     title: "AI Processing",
     description: "Advanced algorithms for professional results",
     orientation: "vertical" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80",
+    src: "/videos/parallax/fast-renderint.mp4",
     alt: "Fast rendering",
     title: "Fast Rendering",
     description: "Videos ready in minutes, not hours",
     orientation: "vertical" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=700&q=80",
+    src: "/videos/parallax/creative-content.mp4",
     alt: "Creative content",
     title: "Creative Content",
     description: "Transform ideas into impactful videos",
     orientation: "horizontal" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80",
+    src: "/videos/parallax/automated-workflow.mp4",
     alt: "Automated workflow",
     title: "Automated Workflow",
     description: "From concept to publication without complications",
     orientation: "vertical" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=700&q=80",
+    src: "/videos/parallax/social-media-ready.mp4",
     alt: "Social media ready",
     title: "Social Media Ready",
     description: "Optimized for all platforms",
     orientation: "horizontal" as const,
   },
   {
-    src: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&q=80",
+    src: "/videos/parallax/profesional-quality.mp4",
     alt: "Professional quality",
     title: "Professional Quality",
     description: "Results of professional level guaranteed",
@@ -84,7 +84,12 @@ export default function Home() {
         <HeroSection />
 
         {/* Zoom Parallax Section - Visual Journey */}
-        <ZoomParallax images={parallaxImages} showLogo={true} />
+        <ZoomParallax
+          videos={parallaxVideos}
+          showLogo={true}
+          title="Platform-Optimized Video Formats"
+          description="Professionally crafted videos tailored for every platform with maximum resolution quality and optimized performance. Deliver exceptional visual experiences across all digital channels."
+        />
 
         {/* How It Works Section */}
         <HowItWorks />

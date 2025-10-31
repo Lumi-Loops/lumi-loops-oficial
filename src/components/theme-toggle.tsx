@@ -22,9 +22,14 @@ export function ThemeToggle() {
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       // Use View Transitions API for smooth animated transition
-      (document as any).startViewTransition(() => {
-        setTheme(newTheme);
-      });
+      if (
+        "startViewTransition" in document &&
+        typeof document.startViewTransition === "function"
+      ) {
+        document.startViewTransition(() => {
+          setTheme(newTheme);
+        });
+      }
     } else {
       // Fallback for browsers that don't support View Transitions
       setTheme(newTheme);

@@ -21,6 +21,13 @@ interface BentoGridItemProps {
   size?: "small" | "medium" | "large";
 }
 
+// Mapa de tamaños a clases de col-span
+const GRID_SIZE_MAP = {
+  large: "col-span-4",
+  medium: "col-span-3",
+  small: "col-span-2",
+} as const;
+
 const BentoGridItem = ({
   title,
   description,
@@ -44,7 +51,7 @@ const BentoGridItem = ({
         className
       )}
     >
-      <div className="absolute top-0 -right-1/2 z-0 size-full cursor-pointer bg-[linear-gradient(to_right,#3d16165e_1px,transparent_1px),linear-gradient(to_bottom,#3d16165e_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:24px_24px]"></div>
+      <div className="absolute top-0 -right-1/2 z-0 size-full cursor-pointer bg-[linear-gradient(to_right,#3d16165e_1px,transparent_1px),linear-gradient(to_bottom,#3d16165e_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-size:[24px_24px]"></div>
 
       <div className="text-primary/5 group-hover:text-primary/10 absolute right-1 bottom-3 scale-[6] transition-all duration-700 group-hover:scale-[6.2]">
         {icon}
@@ -63,7 +70,7 @@ const BentoGridItem = ({
           <ArrowRight className="size-4 transition-all duration-500 group-hover:translate-x-2" />
         </div>
       </div>
-      <div className="from-primary to-primary/30 absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r blur-2xl transition-all duration-500 group-hover:blur-lg" />
+      <div className="from-primary to-primary/30 absolute bottom-0 left-0 h-1 w-full bg-linear-to-r blur-2xl transition-all duration-500 group-hover:blur-lg" />
     </motion.div>
   );
 };
@@ -138,14 +145,7 @@ export default function BentoGrid1() {
             description={item.description}
             icon={item.icon}
             size={item.size}
-            className={cn(
-              item.size === "large"
-                ? "col-span-4"
-                : item.size === "medium"
-                  ? "col-span-3"
-                  : "col-span-2",
-              "h-full"
-            )}
+            className={cn(GRID_SIZE_MAP[item.size || "small"], "h-full")}
           />
         ))}
       </motion.div>
