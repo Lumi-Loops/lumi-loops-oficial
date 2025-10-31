@@ -76,7 +76,7 @@ export function HeroSection() {
           />
         </video>
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-background/10 backdrop-blur-xs" />
       </div>
 
       {/* Background Elements - Gradient blobs on top of video */}

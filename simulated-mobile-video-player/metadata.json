@@ -1,0 +1,5 @@
+{
+  "name": "Simulated Mobile Video Player",
+  "description": "A React component that simulates a mobile device playing vertical videos, mimicking popular social media apps. It features a clean, minimal interface for selecting and playing videos from a predefined list.",
+  "requestFramePermissions": []
+}
