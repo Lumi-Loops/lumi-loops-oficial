@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { VIDEOS } from "./constants";
 import type { Video } from "./types";
 import { CloseIcon, PlayIcon } from "./icons";
@@ -50,13 +49,11 @@ export const VideoSelectorModal: React.FC<VideoSelectorModalProps> = ({
                   : "hover:bg-gray-700"
               }`}
             >
-              <div className="relative w-24 h-16 rounded-md overflow-hidden flex-shrink-0">
-                <Image
-                  src={video.thumbnail}
-                  alt={video.title}
-                  fill
-                  className="object-cover"
-                  sizes="96px"
+              <div className="relative w-24 h-16 rounded-md overflow-hidden flex-shrink-0 bg-black">
+                <video
+                  src={video.url}
+                  preload="metadata"
+                  className="w-full h-full object-cover"
                 />
                 {currentVideoId === video.id && (
                   <div className="absolute inset-0 bg-indigo-600/50 flex items-center justify-center">
