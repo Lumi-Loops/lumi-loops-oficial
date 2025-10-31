@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Ban, Clapperboard, Sparkles, Play, Pause } from "lucide-react";
+import { Ban, Clapperboard, Pause, Play, Sparkles } from "lucide-react";
 
 // Animation variants
 const fadeInUp = {

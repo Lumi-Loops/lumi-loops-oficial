@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { VIDEOS } from "./constants";
 import type { Video } from "./types";
 import { CloseIcon, PlayIcon } from "./icons";
@@ -50,10 +51,12 @@ export const VideoSelectorModal: React.FC<VideoSelectorModalProps> = ({
               }`}
             >
               <div className="relative w-24 h-16 rounded-md overflow-hidden flex-shrink-0">
-                <img
+                <Image
                   src={video.thumbnail}
                   alt={video.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="96px"
                 />
                 {currentVideoId === video.id && (
                   <div className="absolute inset-0 bg-indigo-600/50 flex items-center justify-center">

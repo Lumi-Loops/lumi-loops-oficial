@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Heart, MessageCircle, MoreVertical, Share2 } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 export const FacebookFeedUI: React.FC<{ children: React.ReactNode }> = ({
   children,

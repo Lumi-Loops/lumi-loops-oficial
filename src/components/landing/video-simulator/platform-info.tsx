@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import type { SocialPlatform, PlatformInfoData } from "./types";
+import type { PlatformInfoData, SocialPlatform } from "./types";
 import {
-  Instagram,
-  Monitor,
-  Maximize2,
   FileText,
   HardDrive,
+  Instagram,
+  Maximize2,
+  Monitor,
   Zap,
 } from "lucide-react";
 import { TiktokIcon } from "./icons/tiktok-icon";

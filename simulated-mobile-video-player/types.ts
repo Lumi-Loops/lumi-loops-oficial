@@ -5,14 +5,14 @@ export interface Video {
   thumbnail: string;
 }
 
-export type SocialPlatform = 
-  | 'instagram' 
-  | 'tiktok' 
-  | 'twitter' 
-  | 'facebook' 
-  | 'linkedin' 
-  | 'youtube' 
-  | 'snapchat';
+export type SocialPlatform =
+  | "instagram"
+  | "tiktok"
+  | "twitter"
+  | "facebook"
+  | "linkedin"
+  | "youtube"
+  | "snapchat";
 
 export interface PlatformDetails {
   name: string;

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { VIDEOS } from "./constants";
-import type { Video, SocialPlatform } from "./types";
+import type { SocialPlatform, Video } from "./types";
 import { PlayIcon, VideoIcon } from "./icons";
 import { VideoSelectorModal } from "./video-selector-modal";
 import { InstagramReelUI } from "./platform-ui/instagram-reel-ui";

@@ -1,9 +1,9 @@
-import React from 'react';
-import { HeartIcon } from '../icons/HeartIcon';
-import { CommentIcon } from '../icons/CommentIcon';
-import { ShareIcon } from '../icons/ShareIcon';
-import { MoreIcon } from '../icons/MoreIcon';
-import { MusicNoteIcon } from '../icons/MusicNoteIcon';
+import React from "react";
+import { HeartIcon } from "../icons/HeartIcon";
+import { CommentIcon } from "../icons/CommentIcon";
+import { ShareIcon } from "../icons/ShareIcon";
+import { MoreIcon } from "../icons/MoreIcon";
+import { MusicNoteIcon } from "../icons/MusicNoteIcon";
 
 export const InstagramReelUI: React.FC = () => (
   <div className="absolute inset-0 text-white p-4 flex flex-col justify-between pointer-events-none bg-gradient-to-t from-black/50 to-transparent">
@@ -17,13 +17,17 @@ export const InstagramReelUI: React.FC = () => (
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-gray-500 border-2 border-white flex-shrink-0"></div>
           <span className="font-bold text-sm">username</span>
-          <button className="text-xs font-semibold border px-3 py-1 rounded-md pointer-events-auto hover:bg-white/20 transition-colors">Follow</button>
+          <button className="text-xs font-semibold border px-3 py-1 rounded-md pointer-events-auto hover:bg-white/20 transition-colors">
+            Follow
+          </button>
         </div>
         <p className="text-sm">This is a cool video caption #hashtag</p>
         <div className="flex items-center gap-2">
           <MusicNoteIcon className="w-4 h-4 flex-shrink-0" />
           <div className="text-sm truncate w-full relative h-5 overflow-hidden">
-            <p className="absolute animate-[scroll-text_8s_linear_infinite]">Original audio - username - song name</p>
+            <p className="absolute animate-[scroll-text_8s_linear_infinite]">
+              Original audio - username - song name
+            </p>
           </div>
         </div>
       </div>
