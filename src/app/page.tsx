@@ -104,11 +104,11 @@ export default function Home() {
           autoplay={true}
         />
 
-        {/* Video Simulator Section */}
-        <VideoSimulatorSection />
-
         {/* Social Platforms Carousel */}
         <SocialPlatformsCarousel />
+
+        {/* Video Simulator Section */}
+        <VideoSimulatorSection />
 
         {/* Benefits Section */}
         <BenefitsSection />
