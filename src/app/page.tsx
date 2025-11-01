@@ -1,4 +1,3 @@
-// import { ComingSoon } from "@/components/coming-soon";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/landing/hero-section";
@@ -10,10 +9,6 @@ import { ContactSection } from "@/components/landing/contact-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { FinalCTASection } from "@/components/landing/final-cta-section";
 import { SocialPlatformsCarousel } from "@/components/landing/social-platforms-carousel";
-import {
-  portfolioData,
-  PortfolioVideoShowcase,
-} from "@/components/landing/portfolio-video-showcase";
 import { VideoSimulatorSection } from "@/components/landing/video-simulator-section";
 import { ZoomParallax } from "@/components/zoom-parallax";
 
@@ -98,17 +93,17 @@ export default function Home() {
         {/* Why Choose Us Section */}
         <WhyChooseUs />
 
-        {/* Portfolio Showcase Section */}
+        {/* Portfolio Showcase Section - Commented out
         <PortfolioVideoShowcase
           portfolioItems={portfolioData}
           autoplay={true}
-        />
-
-        {/* Social Platforms Carousel */}
-        <SocialPlatformsCarousel />
+        /> */}
 
         {/* Video Simulator Section */}
         <VideoSimulatorSection />
+
+        {/* Social Platforms Carousel */}
+        <SocialPlatformsCarousel />
 
         {/* Benefits Section */}
         <BenefitsSection />
