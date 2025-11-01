@@ -169,11 +169,14 @@ export function VideoSimulatorSection() {
             </motion.div>
 
             {/* Right Column - Controls and Info */}
-            <motion.div variants={fadeInUp} className="lg:col-span-7 space-y-8">
+            <motion.div
+              variants={fadeInUp}
+              className="lg:col-span-7 space-y-16"
+            >
               {/* Platform Selector - Minimalist Icons */}
               <div>
-                <h3 className="text-foreground text-sm font-semibold mb-4">
-                  Select Platform
+                <h3 className="text-foreground text-lg font-bold mb-6 tracking-wide">
+                  Pick Your Platform
                 </h3>
                 <motion.div
                   variants={fadeInUp}
