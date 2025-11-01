@@ -136,7 +136,7 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
   };
 
   return (
-    <div className="relative w-[340px] h-[700px] md:w-[360px] md:h-[740px] bg-black rounded-[50px] shadow-2xl p-3 border-4 border-gray-700">
+    <div className="group relative w-[340px] h-[700px] md:w-[360px] md:h-[740px] bg-black rounded-[50px] shadow-2xl p-3 border-4 border-gray-700">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-10">
         <div className="absolute left-1/2 -translate-x-1/2 top-2 w-12 h-1 bg-gray-600 rounded-full"></div>
       </div>
@@ -147,7 +147,7 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
         <div className="absolute bottom-4 right-4 z-20">
           <button
             onClick={() => setIsSelectorOpen(true)}
-            className="bg-black/50 backdrop-blur-md p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 shadow-lg"
+            className="bg-black/50 backdrop-blur-md p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100"
             aria-label="Select video"
           >
             <VideoIcon className="w-6 h-6" />
