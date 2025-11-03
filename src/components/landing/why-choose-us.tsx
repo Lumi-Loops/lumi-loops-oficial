@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Ban, Clapperboard, Sparkles } from "lucide-react";
+import { Ban, Clapperboard, Pause, Play, Sparkles } from "lucide-react";
 
 // Animation variants
 const fadeInUp = {
@@ -66,6 +66,134 @@ const checkmarks = [
   "You're not getting generic content — you're getting brand-tailored magic.",
   "You're not wasting time learning software — you're focusing on growing your business.",
 ];
+
+function VideoPlayer() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasPlayed && videoRef.current) {
+          // Reproducir automáticamente cuando entra en viewport
+          videoRef.current.play();
+          setIsPlaying(true);
+          setHasPlayed(true);
+        } else if (!entry.isIntersecting && videoRef.current) {
+          // Pausar cuando sale del viewport
+          videoRef.current.pause();
+          setIsPlaying(false);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasPlayed]);
+
+  const handlePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        videoRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      ref={containerRef}
+      variants={fadeInRight}
+      className="relative lg:order-last"
+    >
+      <div className="from-primary/10 to-accent/10 border-border/50 relative overflow-hidden rounded-2xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm">
+        <div className="bg-muted relative aspect-[9/16]">
+          <video
+            ref={videoRef}
+            src="/videos/why-choose-us/why-choose-us.mp4"
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+            aria-label="Video showcasing the creative process and professional quality that Lumi Loops provides"
+          />
+          {/* Subtle overlay for better text contrast if needed */}
+          <div className="from-primary/20 absolute inset-0 bg-gradient-to-t to-transparent" />
+
+          {/* Play/Pause Button */}
+          <motion.button
+            onClick={handlePlayPause}
+            className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all duration-200 border border-white/30"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label={isPlaying ? "Pause video" : "Play video"}
+          >
+            {isPlaying ? (
+              <Pause className="h-5 w-5 text-white fill-white" />
+            ) : (
+              <Play className="h-5 w-5 text-white fill-white" />
+            )}
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Floating Badge - Bottom Left */}
+      <motion.div
+        className="bg-background/95 border-border/50 absolute -bottom-6 -left-6 rounded-xl border p-4 shadow-lg backdrop-blur-sm"
+        animate={{
+          y: [10, -10, 10],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-3 w-3 animate-pulse rounded-full bg-green-500" />
+          <div>
+            <div className="text-foreground text-sm font-semibold">
+              Human + AI
+            </div>
+            <div className="text-muted-foreground text-xs">
+              Creative Partnership
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Floating Badge - Top Right */}
+      <motion.div
+        className="bg-background/95 border-border/50 absolute -top-6 -right-6 rounded-xl border p-4 shadow-lg backdrop-blur-sm"
+        animate={{
+          y: [-10, 10, -10],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="text-2xl">⚡</div>
+          <span className="text-sm font-semibold">48h Delivery</span>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export function WhyChooseUs() {
   const bannerRef = useRef(null);
@@ -211,70 +339,7 @@ export function WhyChooseUs() {
             </motion.div>
 
             {/* Right Column - Video */}
-            <motion.div
-              variants={fadeInRight}
-              className="relative lg:order-last"
-            >
-              <div className="from-primary/10 to-accent/10 border-border/50 relative overflow-hidden rounded-2xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm">
-                <div className="bg-muted relative aspect-[9/16]">
-                  <video
-                    src="/why-choose/video-01.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute inset-0 h-full w-full object-cover"
-                    aria-label="Video showcasing the creative process and professional quality that Lumi Loops provides"
-                  />
-                  {/* Subtle overlay for better text contrast if needed */}
-                  <div className="from-primary/20 absolute inset-0 bg-gradient-to-t to-transparent" />
-                </div>
-              </div>
-
-              {/* Floating Badge - Bottom Left */}
-              <motion.div
-                className="bg-background/95 border-border/50 absolute -bottom-6 -left-6 rounded-xl border p-4 shadow-lg backdrop-blur-sm"
-                animate={{
-                  y: [10, -10, 10],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1,
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="h-3 w-3 animate-pulse rounded-full bg-green-500" />
-                  <div>
-                    <div className="text-foreground text-sm font-semibold">
-                      Human + AI
-                    </div>
-                    <div className="text-muted-foreground text-xs">
-                      Creative Partnership
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Floating Badge - Top Right */}
-              <motion.div
-                className="bg-background/95 border-border/50 absolute -top-6 -right-6 rounded-xl border p-4 shadow-lg backdrop-blur-sm"
-                animate={{
-                  y: [-10, 10, -10],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">⚡</div>
-                  <span className="text-sm font-semibold">48h Delivery</span>
-                </div>
-              </motion.div>
-            </motion.div>
+            <VideoPlayer />
           </div>
         </motion.div>
       </div>

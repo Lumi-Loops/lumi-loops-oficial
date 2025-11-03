@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle, Play } from "lucide-react";
 
@@ -72,12 +71,12 @@ export function HeroSection() {
           className="h-full w-full object-cover"
         >
           <source
-            src="/videos/background-video/134863-760489732_small.mp4"
+            src="/videos/hero/134863-760489732_small.mp4"
             type="video/mp4"
           />
         </video>
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-background/10 backdrop-blur-xs" />
       </div>
 
       {/* Background Elements - Gradient blobs on top of video */}
@@ -166,7 +165,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   onClick={scrollToContact}
-                  className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 group bg-gradient-to-r px-8 py-6 text-lg"
+                  className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 group bg-linear-to-r px-8 py-6 text-lg"
                 >
                   Get Started Today
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -198,30 +197,31 @@ export function HeroSection() {
             animate="visible"
           >
             {/* Video Background Container */}
-            <div className="from-primary/10 to-accent/10 border-border/50 relative overflow-hidden rounded-2xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm">
+            <div className="from-primary/10 to-accent/10 border-border/50 relative overflow-hidden rounded-2xl border bg-linear-to-br shadow-2xl backdrop-blur-sm">
               <AspectRatio ratio={16 / 9} className="bg-muted">
-                {/* Placeholder for video - using Unsplash image as fallback */}
+                {/* Video Container */}
                 <div className="relative h-full w-full">
-                  <Image
-                    src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=2070&q=80"
-                    alt="Professional video production workspace"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="h-full w-full object-cover rounded-lg"
+                  >
+                    <source
+                      src="/videos/hero/20251023_2151_01k89hkc2nfxcv7bqcfp4vnqhe.mp4"
+                      type="video/mp4"
+                    />
+                  </video>
                   {/* Video overlay */}
-                  <div className="from-primary/20 absolute inset-0 bg-gradient-to-t to-transparent" />
+                  <div className="from-primary/20 absolute inset-0 bg-linear-to-t to-transparent rounded-lg" />
 
                   {/* Play button overlay for video preview */}
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                  >
-                    <div className="bg-background/90 cursor-pointer rounded-full p-6 shadow-lg backdrop-blur-sm">
-                      <Play className="text-primary h-8 w-8" />
-                    </div>
-                  </motion.div>
+                  ></motion.div>
                 </div>
               </AspectRatio>
             </div>

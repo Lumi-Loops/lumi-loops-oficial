@@ -110,12 +110,12 @@ export function BenefitsSection() {
   return (
     <section
       id="beneficios"
-      className="from-primary/5 via-background to-accent/5 relative overflow-hidden bg-gradient-to-br py-24"
+      className="relative overflow-hidden bg-linear-to-br from-primary/5 via-background to-accent/5 py-24"
       role="region"
       aria-labelledby="benefits-title"
     >
       {/* Decorative background elements */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size:[24px_24px]" />
 
       <div className="relative container mx-auto px-4">
         <motion.div
@@ -171,9 +171,9 @@ export function BenefitsSection() {
                   className="group relative"
                 >
                   <div className="bg-card border-border/50 hover:border-primary/30 hover:shadow-primary/10 relative h-full overflow-hidden rounded-2xl border p-8 shadow-lg transition-all duration-500 hover:shadow-2xl">
-                    {/* Gradient overlay on hover */}
+                    {/* linear overlay on hover */}
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br ${benefit.color} opacity-0 transition-opacity duration-500 group-hover:opacity-5`}
+                      className={`absolute inset-0 bg-linear-to-br ${benefit.color} opacity-0 transition-opacity duration-500 group-hover:opacity-5`}
                     />
 
                     {/* Icon */}
@@ -199,7 +199,7 @@ export function BenefitsSection() {
                     </div>
 
                     {/* Decorative corner element */}
-                    <div className="from-primary/10 to-accent/10 absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-gradient-to-br blur-2xl transition-all duration-500 group-hover:scale-150" />
+                    <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-linear-to-br from-primary/10 to-accent/10 blur-2xl transition-all duration-500 group-hover:scale-150" />
                   </div>
                 </motion.div>
               );
@@ -208,16 +208,16 @@ export function BenefitsSection() {
 
           {/* Closing Statement */}
           <motion.div variants={fadeInUp} className="mt-20 text-center">
-            <div className="from-primary/10 via-accent/10 to-primary/10 border-primary/20 mx-auto max-w-3xl rounded-3xl border bg-gradient-to-r p-8 shadow-xl backdrop-blur-sm md:p-12">
+            <div className="mx-auto max-w-3xl rounded-3xl border border-primary/20 bg-linear-to-r from-primary/10 via-accent/10 to-primary/10 p-8 shadow-xl backdrop-blur-sm md:p-12">
               <p className="text-foreground mb-4 text-2xl leading-tight font-bold md:text-3xl">
                 Other tools give you templates.
               </p>
-              <p className="from-primary via-accent to-primary bg-gradient-to-r bg-clip-text text-3xl font-black tracking-tight text-transparent md:text-4xl">
+              <p className="bg-linear-to-r from-primary via-accent to-primary bg-clip-text text-3xl font-black tracking-tight text-transparent md:text-4xl">
                 We give you your brand&apos;s voice, amplified.
               </p>
 
               {/* Decorative line */}
-              <div className="from-primary to-accent mx-auto mt-8 h-1 w-24 rounded-full bg-gradient-to-r" />
+              <div className="mx-auto mt-8 h-1 w-24 rounded-full bg-linear-to-r from-primary to-accent" />
 
               {/* Subtext */}
               <p className="text-muted-foreground mt-6 text-base md:text-lg">

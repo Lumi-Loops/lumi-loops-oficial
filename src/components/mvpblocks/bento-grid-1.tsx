@@ -1,15 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Bot,
-  CheckCircle,
-  Gift,
-  Shield,
-  TrendingUp,
-  Zap,
-} from "lucide-react";
+import { Bot, CheckCircle, Gift, Shield, TrendingUp, Zap } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -20,6 +12,13 @@ interface BentoGridItemProps {
   className?: string;
   size?: "small" | "medium" | "large";
 }
+
+// Mapa de tamaños a clases de col-span
+const GRID_SIZE_MAP = {
+  large: "col-span-4",
+  medium: "col-span-3",
+  small: "col-span-2",
+} as const;
 
 const BentoGridItem = ({
   title,
@@ -40,30 +39,30 @@ const BentoGridItem = ({
     <motion.div
       variants={variants}
       className={cn(
-        "group border-primary/10 bg-background hover:border-primary/30 relative flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl border px-6 pt-6 pb-10 shadow-md transition-all duration-500",
+        "group border-primary/10 bg-background hover:border-primary/30 relative flex h-full cursor-pointer flex-col justify-start overflow-hidden rounded-xl border px-8 pt-8 pb-10 shadow-md transition-all duration-500 md:min-h-[320px] lg:min-h-[380px]",
         className
       )}
     >
-      <div className="absolute top-0 -right-1/2 z-0 size-full cursor-pointer bg-[linear-gradient(to_right,#3d16165e_1px,transparent_1px),linear-gradient(to_bottom,#3d16165e_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:24px_24px]"></div>
+      <div className="absolute top-0 -right-1/2 z-0 size-full cursor-pointer bg-[linear-gradient(to_right,#3d16165e_1px,transparent_1px),linear-gradient(to_bottom,#3d16165e_1px,transparent_1px)] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-size:[24px_24px]"></div>
 
-      <div className="text-primary/5 group-hover:text-primary/10 absolute right-1 bottom-3 scale-[6] transition-all duration-700 group-hover:scale-[6.2]">
+      <div className="text-primary absolute right-2 bottom-4 scale-[7] transition-all duration-700 group-hover:scale-[7.5]">
         {icon}
       </div>
 
-      <div className="relative z-10 flex h-full flex-col justify-between">
+      <div className="relative z-10 flex h-full flex-col justify-start">
         <div>
-          <div className="bg-primary/10 text-primary shadow-primary/10 group-hover:bg-primary/20 group-hover:shadow-primary/20 mb-4 flex h-12 w-12 items-center justify-center rounded-full shadow transition-all duration-500">
+          <div className="bg-primary/15 text-primary shadow-primary/15 group-hover:bg-primary/25 group-hover:shadow-primary/25 mb-6 flex h-14 w-14 items-center justify-center rounded-full shadow transition-all duration-500">
             {icon}
           </div>
-          <h3 className="mb-2 text-xl font-semibold tracking-tight">{title}</h3>
-          <p className="text-muted-foreground text-sm">{description}</p>
-        </div>
-        <div className="text-primary mt-4 flex items-center text-sm">
-          <span className="mr-1">Learn more</span>
-          <ArrowRight className="size-4 transition-all duration-500 group-hover:translate-x-2" />
+          <h3 className="mb-4 text-2xl font-bold tracking-tight text-left lg:text-3xl">
+            {title}
+          </h3>
+          <p className="text-muted-foreground text-base leading-relaxed text-left lg:text-lg">
+            {description}
+          </p>
         </div>
       </div>
-      <div className="from-primary to-primary/30 absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r blur-2xl transition-all duration-500 group-hover:blur-lg" />
+      <div className="from-primary to-primary/30 absolute bottom-0 left-0 h-1 w-full bg-linear-to-r blur-2xl transition-all duration-500 group-hover:blur-lg" />
     </motion.div>
   );
 };
@@ -124,7 +123,7 @@ export default function BentoGrid1() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
+    <div className="w-full px-4 py-12">
       <motion.div
         className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-6"
         variants={containerVariants}
@@ -138,14 +137,7 @@ export default function BentoGrid1() {
             description={item.description}
             icon={item.icon}
             size={item.size}
-            className={cn(
-              item.size === "large"
-                ? "col-span-4"
-                : item.size === "medium"
-                  ? "col-span-3"
-                  : "col-span-2",
-              "h-full"
-            )}
+            className={cn(GRID_SIZE_MAP[item.size || "small"], "h-full")}
           />
         ))}
       </motion.div>

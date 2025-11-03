@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  Sparkles,
-  Zap,
-  Users,
   Calendar,
-  Video,
   PlayCircle,
+  Sparkles,
+  Users,
+  Video,
   Wand2,
+  Zap,
 } from "lucide-react";
 
 export function ComingSoon() {
