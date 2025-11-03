@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   title: "Lumi Loops",
   description: "Official Lumi Loops website",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "/icon-192x192.png",
+    shortcut: "/icon-192x192.png",
+    apple: "/icon-192x192.png",
   },
 };
 
