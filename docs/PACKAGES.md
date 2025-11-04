@@ -170,6 +170,67 @@ Lumi Loops offers three distinct service packages tailored to different business
 
 ---
 
+## Add-ons & Optional Services
+
+Enhance any package with flexible add-ons tailored to your specific needs.
+
+### Additional Revision Round
+
+**Price:** $75 per round
+
+**What it includes:** One additional consolidated list of feedback and a subsequent redelivery of the videos.
+
+**When to use it:** Perfect for when you've used your included revisions but have a few more small tweaks to make.
+
+**How it works:**
+
+1. Submit your feedback in a consolidated list
+2. We review and implement changes
+3. Receive updated videos within standard timeframe
+
+---
+
+### Rush Delivery
+
+**Price:** +25% of package price
+
+**What it includes:** Guarantees delivery of your first draft within 48 business hours of receiving your completed brief.
+
+**When to use it:** Ideal for tight deadlines, sudden promotions, or responding to a fast-moving trend.
+
+**Important notes:**
+
+- Rush pricing applies to the base package cost
+- Requires complete brief submission upfront
+- Limited availability during peak periods
+- Contact us before ordering to confirm rush capacity
+
+---
+
+### Major Scope Change
+
+**Price:** Requires Custom Quote
+
+**What this is:** This applies to any fundamental change to the project after the initial brief and script have been approved. Examples include:
+
+- Changing the core product or service featured
+- Switching the target audience completely
+- Overhauling the entire script or message
+- Adding significantly more content than originally planned
+
+**Why it's extra:** This requires restarting the creative process from concept to delivery.
+
+**How it works:**
+
+1. You request the scope change
+2. We assess the new requirements
+3. We provide a fair quote before any new work begins
+4. Upon approval, we restart with the new brief
+
+**Note:** Minor adjustments and typical revisions are covered within your included revision rounds.
+
+---
+
 ## Getting Started
 
 1. **Evaluate Your Needs:** Determine your video production frequency and format requirements

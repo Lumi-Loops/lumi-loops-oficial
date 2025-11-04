@@ -122,3 +122,39 @@ export const featureDetails: Record<string, Record<string, string>> = {
     "AI Marketing Partner": "Priority Support + Monthly Strategy Call",
   },
 };
+
+// Add-ons and optional services
+export interface AddOn {
+  name: string;
+  price: string;
+  description: string;
+  details: string;
+  icon: string;
+}
+
+export const addOns: AddOn[] = [
+  {
+    name: "Additional Revision Round",
+    price: "$75",
+    description: "One extra round of revisions",
+    details:
+      "What it includes: One additional consolidated list of feedback and a subsequent redelivery of the videos. When to use it: Perfect for when you've used your included revisions but have a few more small tweaks to make.",
+    icon: "Edit",
+  },
+  {
+    name: "Rush Delivery",
+    price: "+25%",
+    description: "Expedited delivery of your content",
+    details:
+      "What it includes: Guarantees delivery of your first draft within 48 business hours of receiving your completed brief. When to use it: Ideal for tight deadlines, sudden promotions, or responding to a fast-moving trend.",
+    icon: "Zap",
+  },
+  {
+    name: "Major Scope Change",
+    price: "Custom Quote",
+    description: "Fundamental changes to approved scope",
+    details:
+      "What this is: This applies to any fundamental change to the project after the initial brief and script have been approved (e.g., changing the core product, the target audience, or the entire script). Why it's extra: This requires restarting the creative process. We will provide a fair quote before any new work begins.",
+    icon: "RefreshCw",
+  },
+];

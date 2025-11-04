@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
 import { pricingPlans } from "./pricing-data";
+import { AddOnsSection } from "./add-ons-section";
 
 // Animation variants
 const fadeInUp = {
@@ -227,6 +228,7 @@ export function PricingSection() {
           </motion.div>
         </motion.div>
       </div>
+      <AddOnsSection />
     </section>
   );
 }
