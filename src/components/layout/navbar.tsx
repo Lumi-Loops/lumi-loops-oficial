@@ -49,10 +49,10 @@ export function Navbar() {
     // Close mobile menu immediately
     setIsMobileMenuOpen(false);
 
-    // Small delay to ensure DOM is ready
-    setTimeout(() => {
+    // Try multiple times with increasing delays to ensure DOM is ready
+    const attemptScroll = (attempt = 0) => {
       const element = document.querySelector(href);
-      console.warn("📍 Element found:", element);
+      console.warn(`📍 Attempt ${attempt + 1} - Element found:`, element);
 
       if (element) {
         // Calculate offset for fixed navbar (64px = navbar height)
@@ -66,12 +66,18 @@ export function Navbar() {
           top: Math.max(0, elementPosition), // Prevent negative scroll
           behavior: "smooth",
         });
+      } else if (attempt < 3) {
+        // Retry up to 3 times with increasing delay
+        setTimeout(() => attemptScroll(attempt + 1), 200 * (attempt + 1));
       } else {
-        console.error("❌ Element not found for:", href);
+        console.error("❌ Element not found after 3 attempts for:", href);
         // Fallback: scroll to top if element not found
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    }, 100); // 100ms delay
+    };
+
+    // Start first attempt with small delay
+    setTimeout(() => attemptScroll(), 100);
   };
 
   return (
