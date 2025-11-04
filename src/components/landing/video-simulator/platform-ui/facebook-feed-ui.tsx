@@ -11,7 +11,7 @@ export const FacebookFeedUI: React.FC<{ children: React.ReactNode }> = ({
     <div className="bg-[#242526] py-3">
       <div className="px-3">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden relative">
+          <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden relative">
             <Image
               src="/images/components/avatar-example-mobile-simulater.png"
               alt="User avatar"

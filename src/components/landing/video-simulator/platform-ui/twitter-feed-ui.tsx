@@ -16,7 +16,7 @@ export const TwitterFeedUI: React.FC<{ children: React.ReactNode }> = ({
   <div className="h-full bg-[#000000] text-white overflow-y-auto">
     <div className="p-3 border-b border-gray-700">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden relative">
+        <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden relative">
           <Image
             src="/images/components/avatar-example-mobile-simulater.png"
             alt="User avatar"

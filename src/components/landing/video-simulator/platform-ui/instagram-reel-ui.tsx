@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 export const InstagramReelUI: React.FC = () => (
-  <div className="absolute inset-0 text-white p-4 flex flex-col justify-between pointer-events-none bg-gradient-to-t from-black/50 to-transparent">
+  <div className="absolute inset-0 text-white p-4 flex flex-col justify-between pointer-events-none bg-linear-to-t from-black/50 to-transparent">
     {/* Top part is usually empty in reels */}
     <div></div>
 
@@ -20,7 +20,7 @@ export const InstagramReelUI: React.FC = () => (
       {/* Left side: user info */}
       <div className="flex-1 space-y-2 min-w-0">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full border-2 border-white flex-shrink-0 overflow-hidden relative">
+          <div className="w-8 h-8 rounded-full border-2 border-white shrink-0 overflow-hidden relative">
             <Image
               src="/images/components/avatar-example-mobile-simulater.png"
               alt="User avatar"
@@ -35,7 +35,7 @@ export const InstagramReelUI: React.FC = () => (
         </div>
         <p className="text-sm">This is a cool video caption #hashtag</p>
         <div className="flex items-center gap-2">
-          <Music className="w-4 h-4 flex-shrink-0" />
+          <Music className="w-4 h-4 shrink-0" />
           <div className="text-sm truncate w-full relative h-5 overflow-hidden">
             <p className="absolute animate-[scroll-text_8s_linear_infinite]">
               Original audio - username - song name

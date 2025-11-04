@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Bookmark, Heart, MessageCircle, Music, Share2 } from "lucide-react";
 
 export const TiktokUI: React.FC = () => (
-  <div className="absolute inset-0 text-white p-3 flex flex-col justify-between pointer-events-none bg-gradient-to-t from-black/50 to-transparent">
+  <div className="absolute inset-0 text-white p-3 flex flex-col justify-between pointer-events-none bg-linear-to-t from-black/50 to-transparent">
     <div></div>
     <div className="flex items-end gap-2">
       {/* Left side */}
@@ -13,7 +13,7 @@ export const TiktokUI: React.FC = () => (
         <h3 className="font-bold text-base">@username</h3>
         <p className="text-sm">This is a viral video caption! #fyp #foryou</p>
         <div className="flex items-center gap-2">
-          <Music className="w-5 h-5" />
+          <Music className="w-5 h-5 shrink-0" />
           <p className="text-sm truncate">trending_sound - Original Sound</p>
         </div>
       </div>

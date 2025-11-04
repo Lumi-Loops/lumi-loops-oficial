@@ -11,7 +11,7 @@ export const LinkedInFeedUI: React.FC<{ children: React.ReactNode }> = ({
     <div className="bg-white m-2 rounded-lg border border-gray-300">
       <div className="p-3">
         <div className="flex items-start gap-3">
-          <div className="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden relative">
+          <div className="w-12 h-12 rounded-full shrink-0 overflow-hidden relative">
             <Image
               src="/images/components/avatar-example-mobile-simulater.png"
               alt="User avatar"

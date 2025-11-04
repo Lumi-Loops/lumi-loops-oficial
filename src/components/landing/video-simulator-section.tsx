@@ -119,7 +119,23 @@ export function VideoSimulatorSection() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -z-10" />
 
-      <div className="container mx-auto px-4">
+      {/* Platform-specific glow effect - at section level */}
+      <motion.div
+        key={platform}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        style={{
+          width: "800px",
+          height: "800px",
+          background: `radial-gradient(circle, ${platformColors[platform]}35 0%, ${platformColors[platform]}12 40%, transparent 70%)`,
+          filter: "blur(80px)",
+          zIndex: 0,
+        }}
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           className="mx-auto max-w-7xl"
           variants={stagger}
@@ -189,6 +205,23 @@ export function VideoSimulatorSection() {
                     <motion.button
                       key={p}
                       onClick={() => setPlatform(p)}
+                      whileHover={{ scale: 1.1 }}
+                      animate={
+                        platform === p
+                          ? {
+                              scale: 1.15,
+                              filter: "drop-shadow(0 0 12px currentColor)",
+                            }
+                          : {
+                              scale: 1,
+                              filter: "drop-shadow(0 0 0px transparent)",
+                            }
+                      }
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      }}
                       style={
                         platform === p
                           ? { color: platformColors[p] }
