@@ -132,7 +132,7 @@ export function ZoomParallax({
       </motion.div>
 
       {/* Parallax Content */}
-      <div className="bg-background relative h-[400vh]">
+      <div className="bg-background relative h-[1000vh]">
         <div className="bg-background sticky top-0 h-screen overflow-hidden">
           {videos.map(({ src, title, description, orientation }, index) => {
             const scale = scales[index % scales.length];
