@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { VIDEOS } from "./constants";
 import type { SocialPlatform, Video } from "./types";
@@ -21,7 +21,6 @@ interface MobileSimulatorProps {
 export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
   platform,
 }) => {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
   const [currentVideo, setCurrentVideo] = useState<Video>(VIDEOS[0]);
   const [isSelectorOpen, setIsSelectorOpen] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -30,8 +29,6 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
   const autoAdvanceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const handleSelectVideo = (video: Video) => {
-    const newIndex = VIDEOS.findIndex((v) => v.id === video.id);
-    setCurrentVideoIndex(newIndex);
     setCurrentVideo(video);
     setIsSelectorOpen(false);
     setIsPlaying(true);
@@ -39,14 +36,16 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
     resetAutoAdvanceTimer();
   };
 
-  const advanceToNextVideo = () => {
-    const nextIndex = (currentVideoIndex + 1) % VIDEOS.length;
-    setCurrentVideoIndex(nextIndex);
-    setCurrentVideo(VIDEOS[nextIndex]);
+  const advanceToNextVideo = useCallback(() => {
+    setCurrentVideo((prevVideo) => {
+      const nextIndex =
+        (VIDEOS.findIndex((v) => v.id === prevVideo.id) + 1) % VIDEOS.length;
+      return VIDEOS[nextIndex];
+    });
     setIsPlaying(true);
-  };
+  }, []);
 
-  const resetAutoAdvanceTimer = () => {
+  const resetAutoAdvanceTimer = useCallback(() => {
     if (autoAdvanceTimer.current) {
       clearTimeout(autoAdvanceTimer.current);
     }
@@ -56,7 +55,7 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
         advanceToNextVideo();
       }, 8000);
     }
-  };
+  }, [isAutoAdvancing, isPlaying, advanceToNextVideo]);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -79,7 +78,7 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
         clearTimeout(autoAdvanceTimer.current);
       }
     };
-  }, [isPlaying, isAutoAdvancing, currentVideoIndex]);
+  }, [resetAutoAdvanceTimer]);
 
   // Cleanup on unmount
   useEffect(() => {
