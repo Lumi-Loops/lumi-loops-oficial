@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Heart, MessageCircle, Repeat2, Share } from "lucide-react";
 
 export const LinkedInFeedUI: React.FC<{ children: React.ReactNode }> = ({
@@ -10,7 +11,14 @@ export const LinkedInFeedUI: React.FC<{ children: React.ReactNode }> = ({
     <div className="bg-white m-2 rounded-lg border border-gray-300">
       <div className="p-3">
         <div className="flex items-start gap-3">
-          <div className="w-12 h-12 rounded-full bg-gray-400 flex-shrink-0"></div>
+          <div className="w-12 h-12 rounded-full flex-shrink-0 overflow-hidden relative">
+            <Image
+              src="/images/components/avatar-example-mobile-simulater.png"
+              alt="User avatar"
+              fill
+              className="object-cover"
+            />
+          </div>
           <div className="flex-1">
             <span className="font-semibold text-sm">Professional User</span>
             <p className="text-xs text-gray-500">

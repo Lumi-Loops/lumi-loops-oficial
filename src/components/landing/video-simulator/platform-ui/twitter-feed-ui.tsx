@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import {
   Heart,
   MessageCircle,
@@ -15,7 +16,14 @@ export const TwitterFeedUI: React.FC<{ children: React.ReactNode }> = ({
   <div className="h-full bg-[#000000] text-white overflow-y-auto">
     <div className="p-3 border-b border-gray-700">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0"></div>
+        <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden relative">
+          <Image
+            src="/images/components/avatar-example-mobile-simulater.png"
+            alt="User avatar"
+            fill
+            className="object-cover"
+          />
+        </div>
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">

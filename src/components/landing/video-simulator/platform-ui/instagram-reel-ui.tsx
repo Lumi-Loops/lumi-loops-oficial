@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import {
   Heart,
   MessageCircle,
@@ -19,7 +20,14 @@ export const InstagramReelUI: React.FC = () => (
       {/* Left side: user info */}
       <div className="flex-1 space-y-2 min-w-0">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gray-500 border-2 border-white flex-shrink-0"></div>
+          <div className="w-8 h-8 rounded-full border-2 border-white flex-shrink-0 overflow-hidden relative">
+            <Image
+              src="/images/components/avatar-example-mobile-simulater.png"
+              alt="User avatar"
+              fill
+              className="object-cover"
+            />
+          </div>
           <span className="font-bold text-sm">username</span>
           <button className="text-xs font-semibold border px-3 py-1 rounded-md pointer-events-auto hover:bg-white/20 transition-colors">
             Follow

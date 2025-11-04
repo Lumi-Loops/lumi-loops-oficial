@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { MoreVertical } from "lucide-react";
 
 export const FacebookFeedUI: React.FC<{ children: React.ReactNode }> = ({
@@ -10,7 +11,14 @@ export const FacebookFeedUI: React.FC<{ children: React.ReactNode }> = ({
     <div className="bg-[#242526] py-3">
       <div className="px-3">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0"></div>
+          <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden relative">
+            <Image
+              src="/images/components/avatar-example-mobile-simulater.png"
+              alt="User avatar"
+              fill
+              className="object-cover"
+            />
+          </div>
           <div className="flex-1">
             <div className="flex items-center justify-between">
               <div>

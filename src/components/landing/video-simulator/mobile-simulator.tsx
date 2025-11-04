@@ -4,8 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { VIDEOS } from "./constants";
 import type { SocialPlatform, Video } from "./types";
-import { PlayIcon, VideoIcon } from "./icons";
-import { VideoSelectorModal } from "./video-selector-modal";
+import { PlayIcon } from "./icons";
 import { InstagramReelUI } from "./platform-ui/instagram-reel-ui";
 import { TiktokUI } from "./platform-ui/tiktok-ui";
 import { TwitterFeedUI } from "./platform-ui/twitter-feed-ui";
@@ -22,19 +21,10 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
   platform,
 }) => {
   const [currentVideo, setCurrentVideo] = useState<Video>(VIDEOS[0]);
-  const [isSelectorOpen, setIsSelectorOpen] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState<boolean>(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const autoAdvanceTimer = useRef<NodeJS.Timeout | null>(null);
-
-  const handleSelectVideo = (video: Video) => {
-    setCurrentVideo(video);
-    setIsSelectorOpen(false);
-    setIsPlaying(true);
-    // Reset auto-advance timer
-    resetAutoAdvanceTimer();
-  };
 
   const advanceToNextVideo = useCallback(() => {
     setCurrentVideo((prevVideo) => {
@@ -203,43 +193,6 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
 
       <div className="w-full h-full bg-black rounded-[38px] overflow-hidden relative">
         {renderScreenContent()}
-
-        <div className="absolute bottom-4 right-4 z-20 flex gap-2">
-          <button
-            onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
-            className={`backdrop-blur-md p-2 rounded-full text-white transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100 ${
-              isAutoAdvancing
-                ? "bg-green-500/70 hover:bg-green-500/90"
-                : "bg-red-500/70 hover:bg-red-500/90"
-            }`}
-            aria-label={
-              isAutoAdvancing ? "Disable auto-advance" : "Enable auto-advance"
-            }
-            title={isAutoAdvancing ? "Auto-advance ON" : "Auto-advance OFF"}
-          >
-            <div className="w-4 h-4 flex items-center justify-center">
-              {isAutoAdvancing ? (
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              ) : (
-                <div className="w-2 h-2 bg-white" />
-              )}
-            </div>
-          </button>
-          <button
-            onClick={() => setIsSelectorOpen(true)}
-            className="bg-black/50 backdrop-blur-md p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100"
-            aria-label="Select video"
-          >
-            <VideoIcon className="w-6 h-6" />
-          </button>
-        </div>
-
-        <VideoSelectorModal
-          isOpen={isSelectorOpen}
-          onClose={() => setIsSelectorOpen(false)}
-          onSelect={handleSelectVideo}
-          currentVideoId={currentVideo.id}
-        />
       </div>
 
       {/* Side buttons for aesthetics */}

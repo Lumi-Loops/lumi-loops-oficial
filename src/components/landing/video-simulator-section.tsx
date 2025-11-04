@@ -175,9 +175,12 @@ export function VideoSimulatorSection() {
             >
               {/* Platform Selector - Minimalist Icons */}
               <div>
-                <h3 className="text-foreground text-lg font-bold mb-6 tracking-wide">
-                  Pick Your Platform
+                <h3 className="text-foreground text-lg font-bold mb-2 tracking-wide">
+                  Select Your Platform
                 </h3>
+                <p className="text-muted-foreground text-sm mb-6">
+                  Select a platform to preview your video
+                </p>
                 <motion.div
                   variants={fadeInUp}
                   className="flex items-center justify-center lg:justify-start gap-8 flex-wrap"
