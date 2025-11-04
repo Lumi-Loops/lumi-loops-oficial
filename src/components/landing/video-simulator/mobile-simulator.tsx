@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { VIDEOS } from "./constants";
 import type { SocialPlatform, Video } from "./types";
 import { PlayIcon, VideoIcon } from "./icons";
@@ -20,15 +21,41 @@ interface MobileSimulatorProps {
 export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
   platform,
 }) => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
   const [currentVideo, setCurrentVideo] = useState<Video>(VIDEOS[0]);
   const [isSelectorOpen, setIsSelectorOpen] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isAutoAdvancing, setIsAutoAdvancing] = useState<boolean>(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const autoAdvanceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const handleSelectVideo = (video: Video) => {
+    const newIndex = VIDEOS.findIndex((v) => v.id === video.id);
+    setCurrentVideoIndex(newIndex);
     setCurrentVideo(video);
     setIsSelectorOpen(false);
     setIsPlaying(true);
+    // Reset auto-advance timer
+    resetAutoAdvanceTimer();
+  };
+
+  const advanceToNextVideo = () => {
+    const nextIndex = (currentVideoIndex + 1) % VIDEOS.length;
+    setCurrentVideoIndex(nextIndex);
+    setCurrentVideo(VIDEOS[nextIndex]);
+    setIsPlaying(true);
+  };
+
+  const resetAutoAdvanceTimer = () => {
+    if (autoAdvanceTimer.current) {
+      clearTimeout(autoAdvanceTimer.current);
+    }
+    if (isAutoAdvancing && isPlaying) {
+      // Start timer for 8 seconds (duration of each video cycle)
+      autoAdvanceTimer.current = setTimeout(() => {
+        advanceToNextVideo();
+      }, 8000);
+    }
   };
 
   useEffect(() => {
@@ -44,23 +71,57 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
     }
   }, [isPlaying, currentVideo]);
 
+  // Auto-advance timer effect
+  useEffect(() => {
+    resetAutoAdvanceTimer();
+    return () => {
+      if (autoAdvanceTimer.current) {
+        clearTimeout(autoAdvanceTimer.current);
+      }
+    };
+  }, [isPlaying, isAutoAdvancing, currentVideoIndex]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (autoAdvanceTimer.current) {
+        clearTimeout(autoAdvanceTimer.current);
+      }
+    };
+  }, []);
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
+    // Toggle auto-advance when manually pausing/playing
+    if (isPlaying) {
+      setIsAutoAdvancing(false);
+    } else {
+      setIsAutoAdvancing(true);
+    }
   };
 
   const renderScreenContent = () => {
     const videoPlayer = (
-      <video
-        ref={videoRef}
-        key={currentVideo.id}
-        src={currentVideo.url}
-        loop
-        autoPlay
-        muted
-        playsInline
-        className="w-full h-full object-cover"
-        onClick={togglePlay}
-      />
+      <AnimatePresence mode="wait">
+        <motion.video
+          key={currentVideo.id}
+          ref={videoRef}
+          src={currentVideo.url}
+          loop
+          autoPlay
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          onClick={togglePlay}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeInOut",
+          }}
+        />
+      </AnimatePresence>
     );
 
     const playPauseOverlay = !isPlaying && (
@@ -144,7 +205,27 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
       <div className="w-full h-full bg-black rounded-[38px] overflow-hidden relative">
         {renderScreenContent()}
 
-        <div className="absolute bottom-4 right-4 z-20">
+        <div className="absolute bottom-4 right-4 z-20 flex gap-2">
+          <button
+            onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+            className={`backdrop-blur-md p-2 rounded-full text-white transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100 ${
+              isAutoAdvancing
+                ? "bg-green-500/70 hover:bg-green-500/90"
+                : "bg-red-500/70 hover:bg-red-500/90"
+            }`}
+            aria-label={
+              isAutoAdvancing ? "Disable auto-advance" : "Enable auto-advance"
+            }
+            title={isAutoAdvancing ? "Auto-advance ON" : "Auto-advance OFF"}
+          >
+            <div className="w-4 h-4 flex items-center justify-center">
+              {isAutoAdvancing ? (
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              ) : (
+                <div className="w-2 h-2 bg-white" />
+              )}
+            </div>
+          </button>
           <button
             onClick={() => setIsSelectorOpen(true)}
             className="bg-black/50 backdrop-blur-md p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100"
