@@ -1,9 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle, Play } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle,
+  Pause,
+  Play,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
+import { useRef, useState } from "react";
 
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -32,6 +39,28 @@ const stagger = {
 };
 
 export function HeroSection() {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleMuteToggle = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
   const scrollToContact = () => {
     const element = document.querySelector("#contacto");
     if (element) {
@@ -196,34 +225,68 @@ export function HeroSection() {
             initial="hidden"
             animate="visible"
           >
-            {/* Video Background Container */}
-            <div className="from-primary/10 to-accent/10 border-border/50 relative overflow-hidden rounded-2xl border bg-linear-to-br shadow-2xl backdrop-blur-sm">
-              <AspectRatio ratio={16 / 9} className="bg-muted">
-                {/* Video Container */}
-                <div className="relative h-full w-full">
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="h-full w-full object-cover rounded-lg"
-                  >
-                    <source
-                      src="/videos/hero/20251023_2151_01k89hkc2nfxcv7bqcfp4vnqhe.mp4"
-                      type="video/mp4"
-                    />
-                  </video>
-                  {/* Video overlay */}
-                  <div className="from-primary/20 absolute inset-0 bg-linear-to-t to-transparent rounded-lg" />
+            {/* Glow Effect Background */}
+            <div className="absolute -inset-8 bg-linear-to-r from-primary/30 via-accent/20 to-primary/30 rounded-3xl blur-3xl opacity-75 -z-10" />
+            <div className="absolute -inset-4 bg-linear-to-br from-primary/20 to-accent/10 rounded-2xl blur-2xl opacity-60 -z-10" />
 
-                  {/* Play button overlay for video preview */}
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center"
+            {/* Video Background Container */}
+            <div className="from-primary/10 to-accent/10 border-border/50 group relative overflow-hidden rounded-2xl border bg-linear-to-br shadow-2xl shadow-primary/50 backdrop-blur-sm w-full max-w-2xl aspect-square">
+              {/* Square Video Container */}
+              <div className="relative w-full h-full">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
+                  className="w-full h-full object-cover rounded-lg"
+                  onLoadedMetadata={() => {
+                    if (videoRef.current) {
+                      videoRef.current.muted = isMuted;
+                    }
+                  }}
+                >
+                  <source
+                    src="/videos/hero/presentation.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+                {/* Video overlay */}
+                <div className="from-primary/20 absolute inset-0 bg-linear-to-t to-transparent rounded-lg" />
+
+                {/* Controls - Bottom Right */}
+                <div className="absolute bottom-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <motion.button
+                    onClick={handlePlayPause}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                  ></motion.div>
+                    className="bg-primary/80 hover:bg-primary backdrop-blur-md p-2.5 rounded-full text-white shadow-lg transition-all duration-200"
+                    aria-label={isPlaying ? "Pause" : "Play"}
+                    title={isPlaying ? "Pause" : "Play"}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-5 h-5" fill="white" />
+                    ) : (
+                      <Play className="w-5 h-5" fill="white" />
+                    )}
+                  </motion.button>
+
+                  <motion.button
+                    onClick={handleMuteToggle}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-black/40 hover:bg-black/60 backdrop-blur-md p-2.5 rounded-full text-white shadow-lg transition-all duration-200"
+                    aria-label={isMuted ? "Unmute" : "Mute"}
+                    title={isMuted ? "Unmute audio" : "Mute audio"}
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-5 h-5" />
+                    ) : (
+                      <Volume2 className="w-5 h-5" />
+                    )}
+                  </motion.button>
                 </div>
-              </AspectRatio>
+              </div>
             </div>
 
             {/* Floating elements */}

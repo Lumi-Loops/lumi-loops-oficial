@@ -29,10 +29,10 @@ const parallaxVideos = [
     orientation: "vertical" as const,
   },
   {
-    src: "/videos/parallax/fast-renderint.mp4",
-    alt: "Fast rendering",
-    title: "Fast Rendering",
-    description: "Videos ready in minutes, not hours",
+    src: "/videos/parallax/profesional-quality.mp4",
+    alt: "Professional quality",
+    title: "Professional Quality",
+    description: "Results of professional level guaranteed",
     orientation: "vertical" as const,
   },
   {
@@ -57,10 +57,10 @@ const parallaxVideos = [
     orientation: "horizontal" as const,
   },
   {
-    src: "/videos/parallax/profesional-quality.mp4",
-    alt: "Professional quality",
-    title: "Professional Quality",
-    description: "Results of professional level guaranteed",
+    src: "/videos/parallax/fast-renderint.mp4",
+    alt: "Fast rendering",
+    title: "Fast Rendering",
+    description: "Videos ready in minutes, not hours",
     orientation: "horizontal" as const,
   },
 ];

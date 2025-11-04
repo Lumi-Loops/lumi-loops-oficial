@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const socialLinks = [
   {
@@ -173,7 +172,7 @@ export function Footer() {
             <h4 className="font-semibold md:text-base">Contact</h4>
             <div className="space-y-3 md:space-y-4">
               <div className="text-muted-foreground flex items-center justify-center space-x-3 text-sm md:justify-start md:text-base">
-                <Mail className="h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
+                <Mail className="h-4 w-4 shrink-0 md:h-5 md:w-5" />
                 <a
                   href="mailto:lumiloops.dev@gmail.com"
                   className="hover:text-foreground transition-colors duration-200"
@@ -182,7 +181,7 @@ export function Footer() {
                 </a>
               </div>
               <div className="text-muted-foreground flex items-center justify-center space-x-3 text-sm md:justify-start md:text-base">
-                <MapPin className="h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
+                <MapPin className="h-4 w-4 shrink-0 md:h-5 md:w-5" />
                 <span>Virginia, United States</span>
               </div>
             </div>
@@ -199,12 +198,10 @@ export function Footer() {
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <div className="flex items-center gap-4">
+          <div>
             <p className="text-muted-foreground text-sm md:text-base">
               © 2024 Lumi Loops. All rights reserved.
             </p>
-            <div className="border-border/50 h-6 w-px border-l" />
-            <ThemeToggle />
           </div>
 
           <nav className="flex flex-wrap justify-center gap-4 text-sm md:gap-6 md:text-base">

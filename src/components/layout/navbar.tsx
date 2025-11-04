@@ -49,10 +49,10 @@ export function Navbar() {
     // Close mobile menu immediately
     setIsMobileMenuOpen(false);
 
-    // Small delay to ensure DOM is ready
-    setTimeout(() => {
+    // Try multiple times with increasing delays to ensure DOM is ready
+    const attemptScroll = (attempt = 0) => {
       const element = document.querySelector(href);
-      console.warn("📍 Element found:", element);
+      console.warn(`📍 Attempt ${attempt + 1} - Element found:`, element);
 
       if (element) {
         // Calculate offset for fixed navbar (64px = navbar height)
@@ -66,12 +66,18 @@ export function Navbar() {
           top: Math.max(0, elementPosition), // Prevent negative scroll
           behavior: "smooth",
         });
+      } else if (attempt < 3) {
+        // Retry up to 3 times with increasing delay
+        setTimeout(() => attemptScroll(attempt + 1), 200 * (attempt + 1));
       } else {
-        console.error("❌ Element not found for:", href);
+        console.error("❌ Element not found after 3 attempts for:", href);
         // Fallback: scroll to top if element not found
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    }, 100); // 100ms delay
+    };
+
+    // Start first attempt with small delay
+    setTimeout(() => attemptScroll(), 100);
   };
 
   return (
@@ -125,7 +131,7 @@ export function Navbar() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 onClick={() => scrollToSection("#contacto")}
-                className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-gradient-to-r"
+                className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-linear-to-r"
               >
                 Get Started
               </Button>
@@ -171,7 +177,7 @@ export function Navbar() {
                   console.warn("Mobile CTA clicked: #contacto");
                   scrollToSection("#contacto");
                 }}
-                className="from-primary to-primary/80 w-full bg-gradient-to-r"
+                className="from-primary to-primary/80 w-full bg-linear-to-r"
               >
                 Get Started
               </Button>
@@ -182,7 +188,7 @@ export function Navbar() {
 
       {/* Scroll Progress Bar */}
       <motion.div
-        className="from-primary to-accent absolute bottom-0 left-0 h-0.5 w-full origin-left bg-gradient-to-r"
+        className="from-primary to-accent absolute bottom-0 left-0 h-0.5 w-full origin-left bg-linear-to-r"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: scrollProgress / 100 }}
         transition={{ duration: 0.1, ease: "easeOut" }}

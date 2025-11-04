@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { VIDEOS } from "./constants";
 import type { SocialPlatform, Video } from "./types";
-import { PlayIcon, VideoIcon } from "./icons";
-import { VideoSelectorModal } from "./video-selector-modal";
+import { PlayIcon } from "./icons";
 import { InstagramReelUI } from "./platform-ui/instagram-reel-ui";
 import { TiktokUI } from "./platform-ui/tiktok-ui";
 import { TwitterFeedUI } from "./platform-ui/twitter-feed-ui";
@@ -21,15 +21,31 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
   platform,
 }) => {
   const [currentVideo, setCurrentVideo] = useState<Video>(VIDEOS[0]);
-  const [isSelectorOpen, setIsSelectorOpen] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isAutoAdvancing, setIsAutoAdvancing] = useState<boolean>(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const autoAdvanceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSelectVideo = (video: Video) => {
-    setCurrentVideo(video);
-    setIsSelectorOpen(false);
+  const advanceToNextVideo = useCallback(() => {
+    setCurrentVideo((prevVideo) => {
+      const nextIndex =
+        (VIDEOS.findIndex((v) => v.id === prevVideo.id) + 1) % VIDEOS.length;
+      return VIDEOS[nextIndex];
+    });
     setIsPlaying(true);
-  };
+  }, []);
+
+  const resetAutoAdvanceTimer = useCallback(() => {
+    if (autoAdvanceTimer.current) {
+      clearTimeout(autoAdvanceTimer.current);
+    }
+    if (isAutoAdvancing && isPlaying) {
+      // Start timer for 8 seconds (duration of each video cycle)
+      autoAdvanceTimer.current = setTimeout(() => {
+        advanceToNextVideo();
+      }, 8000);
+    }
+  }, [isAutoAdvancing, isPlaying, advanceToNextVideo]);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -44,23 +60,57 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
     }
   }, [isPlaying, currentVideo]);
 
+  // Auto-advance timer effect
+  useEffect(() => {
+    resetAutoAdvanceTimer();
+    return () => {
+      if (autoAdvanceTimer.current) {
+        clearTimeout(autoAdvanceTimer.current);
+      }
+    };
+  }, [resetAutoAdvanceTimer]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (autoAdvanceTimer.current) {
+        clearTimeout(autoAdvanceTimer.current);
+      }
+    };
+  }, []);
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
+    // Toggle auto-advance when manually pausing/playing
+    if (isPlaying) {
+      setIsAutoAdvancing(false);
+    } else {
+      setIsAutoAdvancing(true);
+    }
   };
 
   const renderScreenContent = () => {
     const videoPlayer = (
-      <video
-        ref={videoRef}
-        key={currentVideo.id}
-        src={currentVideo.url}
-        loop
-        autoPlay
-        muted
-        playsInline
-        className="w-full h-full object-cover"
-        onClick={togglePlay}
-      />
+      <AnimatePresence mode="wait">
+        <motion.video
+          key={currentVideo.id}
+          ref={videoRef}
+          src={currentVideo.url}
+          loop
+          autoPlay
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          onClick={togglePlay}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeInOut",
+          }}
+        />
+      </AnimatePresence>
     );
 
     const playPauseOverlay = !isPlaying && (
@@ -116,7 +166,7 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
       }
       const videoContainer = (
         <div
-          className="relative rounded-lg overflow-hidden w-full aspect-[9/16] mx-auto"
+          className="relative rounded-lg overflow-hidden w-full aspect-9/16 mx-auto"
           onClick={togglePlay}
         >
           {videoPlayer}
@@ -143,23 +193,6 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
 
       <div className="w-full h-full bg-black rounded-[38px] overflow-hidden relative">
         {renderScreenContent()}
-
-        <div className="absolute bottom-4 right-4 z-20">
-          <button
-            onClick={() => setIsSelectorOpen(true)}
-            className="bg-black/50 backdrop-blur-md p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100"
-            aria-label="Select video"
-          >
-            <VideoIcon className="w-6 h-6" />
-          </button>
-        </div>
-
-        <VideoSelectorModal
-          isOpen={isSelectorOpen}
-          onClose={() => setIsSelectorOpen(false)}
-          onSelect={handleSelectVideo}
-          currentVideoId={currentVideo.id}
-        />
       </div>
 
       {/* Side buttons for aesthetics */}
