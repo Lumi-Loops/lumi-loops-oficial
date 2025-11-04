@@ -12,7 +12,7 @@ export async function GET(_request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile, error } = await supabaseAdmin
+    const { data: profile, error } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", user.id)
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { full_name, avatar_url } = body;
 
-    const { data: profile, error } = await supabaseAdmin
+    const { data: profile, error } = await supabase
       .from("profiles")
       .insert([
         {
@@ -91,7 +91,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const { full_name, avatar_url } = body;
 
-    const { data: profile, error } = await supabaseAdmin
+    const { data: profile, error } = await supabase
       .from("profiles")
       .update({
         full_name,
