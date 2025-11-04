@@ -116,7 +116,7 @@ export const MobileSimulator: React.FC<MobileSimulatorProps> = ({
       }
       const videoContainer = (
         <div
-          className="relative rounded-lg overflow-hidden w-full aspect-[9/16] mx-auto"
+          className="relative rounded-lg overflow-hidden w-full aspect-9/16 mx-auto"
           onClick={togglePlay}
         >
           {videoPlayer}

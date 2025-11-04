@@ -131,7 +131,7 @@ export function Navbar() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 onClick={() => scrollToSection("#contacto")}
-                className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-gradient-to-r"
+                className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-linear-to-r"
               >
                 Get Started
               </Button>
@@ -177,7 +177,7 @@ export function Navbar() {
                   console.warn("Mobile CTA clicked: #contacto");
                   scrollToSection("#contacto");
                 }}
-                className="from-primary to-primary/80 w-full bg-gradient-to-r"
+                className="from-primary to-primary/80 w-full bg-linear-to-r"
               >
                 Get Started
               </Button>
@@ -188,7 +188,7 @@ export function Navbar() {
 
       {/* Scroll Progress Bar */}
       <motion.div
-        className="from-primary to-accent absolute bottom-0 left-0 h-0.5 w-full origin-left bg-gradient-to-r"
+        className="from-primary to-accent absolute bottom-0 left-0 h-0.5 w-full origin-left bg-linear-to-r"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: scrollProgress / 100 }}
         transition={{ duration: 0.1, ease: "easeOut" }}
