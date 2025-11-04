@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
+import { pricingPlans } from "./pricing-data";
+import { AddOnsSection } from "./add-ons-section";
 
 // Animation variants
 const fadeInUp = {
@@ -40,54 +42,6 @@ const cardVariants = {
     },
   },
 };
-
-const pricingPlans = [
-  {
-    name: "Starter",
-    price: "$97",
-    period: "one-time",
-    description: "Perfect for testing the waters",
-    features: [
-      "1 video (up to 30 sec)",
-      "1 round of revisions",
-      "Platform optimized",
-      "Delivery in 72h",
-    ],
-    cta: "Get Started",
-    popular: false,
-    highlight: false,
-  },
-  {
-    name: "Growth",
-    price: "$247",
-    period: "one-time",
-    description: "Best value for growing brands",
-    features: [
-      "3 videos",
-      "Multi-platform formats",
-      "2 rounds of revisions",
-      "Delivery in 48h",
-    ],
-    cta: "Get Started",
-    popular: true,
-    highlight: true,
-  },
-  {
-    name: "Pro Monthly",
-    price: "$597",
-    period: "/mo",
-    description: "For serious content creators",
-    features: [
-      "8 videos/month",
-      "Strategy consultation",
-      "Priority support",
-      "24h rush option",
-    ],
-    cta: "Book a Call",
-    popular: false,
-    highlight: false,
-  },
-];
 
 export function PricingSection() {
   const handleCTAClick = () => {
@@ -140,8 +94,9 @@ export function PricingSection() {
               Simple, Transparent Pricing
             </h2>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
-              Choose the perfect plan for your content needs. No hidden fees, no
-              surprises — just scroll-stopping videos.
+              Choose the perfect plan for your AI video needs. From starter
+              batches to complete video strategies — all with transparent
+              pricing and no hidden fees.
             </p>
           </motion.div>
 
@@ -261,8 +216,8 @@ export function PricingSection() {
           {/* Bottom Note */}
           <motion.div variants={fadeInUp} className="mt-12 text-center">
             <p className="text-muted-foreground text-sm">
-              All plans include commercial usage rights and platform-optimized
-              delivery.{" "}
+              All plans include commercial usage rights, subtitles, and
+              premium-quality AI video delivery.{" "}
               <button
                 onClick={handleCTAClick}
                 className="text-primary hover:text-primary/80 font-semibold underline decoration-2 underline-offset-4 transition-colors"
@@ -273,6 +228,7 @@ export function PricingSection() {
           </motion.div>
         </motion.div>
       </div>
+      <AddOnsSection />
     </section>
   );
 }
