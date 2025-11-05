@@ -112,8 +112,11 @@ export function NotificationQueueAdmin() {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 10000);
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 10000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterStatus]);
 
   const retryNotification = async (itemId: string) => {
@@ -154,31 +157,33 @@ export function NotificationQueueAdmin() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cola de Notificaciones</CardTitle>
-        <CardDescription>Gestión de notificaciones por correo</CardDescription>
+        <CardTitle>Notification Queue</CardTitle>
+        <CardDescription>
+          Manage email notifications and delivery status
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="border rounded-lg p-4 space-y-1">
-            <div className="text-sm font-medium text-gray-600">En Cola</div>
+            <div className="text-sm font-medium text-gray-600">Queued</div>
             <div className="text-2xl font-bold text-blue-600">
               {stats.queued}
             </div>
           </div>
           <div className="border rounded-lg p-4 space-y-1">
-            <div className="text-sm font-medium text-gray-600">Enviando</div>
+            <div className="text-sm font-medium text-gray-600">Sending</div>
             <div className="text-2xl font-bold text-purple-600">
               {stats.sending}
             </div>
           </div>
           <div className="border rounded-lg p-4 space-y-1">
-            <div className="text-sm font-medium text-gray-600">Enviadas</div>
+            <div className="text-sm font-medium text-gray-600">Sent</div>
             <div className="text-2xl font-bold text-green-600">
               {stats.sent}
             </div>
           </div>
           <div className="border rounded-lg p-4 space-y-1">
-            <div className="text-sm font-medium text-gray-600">Fallidas</div>
+            <div className="text-sm font-medium text-gray-600">Failed</div>
             <div className="text-2xl font-bold text-red-600">
               {stats.failed}
             </div>
@@ -191,11 +196,11 @@ export function NotificationQueueAdmin() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todos los Estados</SelectItem>
-              <SelectItem value="queued">En Cola</SelectItem>
-              <SelectItem value="sending">Enviando</SelectItem>
-              <SelectItem value="sent">Enviadas</SelectItem>
-              <SelectItem value="failed">Fallidas</SelectItem>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="queued">Queued</SelectItem>
+              <SelectItem value="sending">Sending</SelectItem>
+              <SelectItem value="sent">Sent</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -204,25 +209,25 @@ export function NotificationQueueAdmin() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Estado</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>Destinatario</TableHead>
-                <TableHead>Intentos</TableHead>
-                <TableHead>Fecha</TableHead>
-                <TableHead>Acciones</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Recipient</TableHead>
+                <TableHead>Retries</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center">
-                    Cargando...
+                    Loading...
                   </TableCell>
                 </TableRow>
               ) : items.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center">
-                    No hay notificaciones
+                    No notifications found
                   </TableCell>
                 </TableRow>
               ) : (
@@ -256,9 +261,9 @@ export function NotificationQueueAdmin() {
                               size="sm"
                               variant="outline"
                               onClick={() => retryNotification(item.id)}
-                              title="Reintentar"
+                              title="Retry"
                             >
-                              Reintentar
+                              Retry
                             </Button>
                           )}
                         {item.status !== "sent" && (
@@ -266,9 +271,9 @@ export function NotificationQueueAdmin() {
                             size="sm"
                             variant="ghost"
                             onClick={() => skipNotification(item.id)}
-                            title="Omitir"
+                            title="Skip"
                           >
-                            Omitir
+                            Skip
                           </Button>
                         )}
                       </div>

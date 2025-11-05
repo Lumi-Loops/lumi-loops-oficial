@@ -11,6 +11,7 @@ import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminCustomers } from "@/components/admin/AdminCustomers";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminFooter } from "@/components/admin/AdminFooter";
+import { AdminInquiries } from "@/components/admin/AdminInquiries";
 
 export default function AdminPage() {
   return (
@@ -38,23 +39,26 @@ function AdminContent() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 mb-6 h-auto">
-              <TabsTrigger value="overview" className="text-xs sm:text-sm">
+            <TabsList className="grid w-full grid-cols-4 gap-1 mb-6 h-auto">
+              <TabsTrigger value="overview" className="text-xs">
                 Overview
               </TabsTrigger>
-              <TabsTrigger value="customers" className="text-xs sm:text-sm">
+              <TabsTrigger value="inquiries" className="text-xs">
+                Inquiries
+              </TabsTrigger>
+              <TabsTrigger value="customers" className="text-xs">
                 Customers
               </TabsTrigger>
-              <TabsTrigger value="tickets" className="text-xs sm:text-sm">
+              <TabsTrigger value="tickets" className="text-xs">
                 Tickets
               </TabsTrigger>
-              <TabsTrigger value="notifications" className="text-xs sm:text-sm">
+              <TabsTrigger value="notifications" className="text-xs">
                 Notifications
               </TabsTrigger>
-              <TabsTrigger value="audit" className="text-xs sm:text-sm">
+              <TabsTrigger value="audit" className="text-xs">
                 Audit Log
               </TabsTrigger>
-              <TabsTrigger value="settings" className="text-xs sm:text-sm">
+              <TabsTrigger value="settings" className="text-xs">
                 Settings
               </TabsTrigger>
             </TabsList>
@@ -78,6 +82,11 @@ function AdminContent() {
                   </ul>
                 </div>
               </div>
+            </TabsContent>
+
+            {/* Inquiries Tab */}
+            <TabsContent value="inquiries">
+              <AdminInquiries />
             </TabsContent>
 
             {/* Customers Tab */}
