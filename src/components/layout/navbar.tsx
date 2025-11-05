@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useScrollNavbar } from "@/hooks/use-scroll-navbar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { createClient } from "@/utils/supabase/client";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 
 // Scroll progress hook for premium navbar indicator
@@ -45,6 +46,32 @@ export function Navbar() {
   const scrollProgress = useScrollProgress();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, loading } = useAuth();
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserRole();
+    }
+  }, [user?.id]);
+
+  const fetchUserRole = async () => {
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user?.id)
+        .single();
+      if (data) {
+        setUserRole(data.role);
+      }
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
+  };
+
+  const userDashboardLink =
+    userRole === "admin" ? "/admin" : "/dashboard/profile";
 
   const scrollToSection = (href: string) => {
     console.warn("🚀 Attempting to scroll to:", href);
@@ -135,7 +162,7 @@ export function Navbar() {
               <>
                 {user ? (
                   <>
-                    <Link href="/dashboard/profile">
+                    <Link href={userDashboardLink}>
                       <Button variant="outline">{user.email}</Button>
                     </Link>
                     <SignOutButton />
@@ -201,7 +228,7 @@ export function Navbar() {
                 <>
                   {user ? (
                     <>
-                      <Link href="/dashboard/profile" className="block">
+                      <Link href={userDashboardLink} className="block">
                         <Button variant="outline" className="w-full">
                           {user.email}
                         </Button>

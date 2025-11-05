@@ -1,8 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { AdminGuard } from "@/components/auth/AdminGuard";
-import { SignOutButton } from "@/components/auth/SignOutButton";
 import { useAuth } from "@/hooks/useAuth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AdminTicketsInbox } from "@/components/admin/AdminTicketsInbox";
+import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
+import { NotificationQueueAdmin } from "@/components/admin/NotificationQueueAdmin";
+import { AdminSettings } from "@/components/admin/AdminSettings";
+import { AdminCustomers } from "@/components/admin/AdminCustomers";
+import { AdminHeader } from "@/components/admin/AdminHeader";
+import { AdminFooter } from "@/components/admin/AdminFooter";
 
 export default function AdminPage() {
   return (
@@ -14,32 +22,92 @@ export default function AdminPage() {
 
 function AdminContent() {
   const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Admin Panel</h1>
-          <SignOutButton />
-        </div>
-
-        <div className="bg-card border border-border rounded-lg p-6 space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Welcome Admin</h2>
-            <p className="text-muted-foreground">Email: {user?.email}</p>
+    <div className="min-h-screen bg-background">
+      <AdminHeader />
+      <div className="px-4 sm:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold">Admin Panel</h1>
           </div>
 
-          <div className="border-t border-border pt-6">
-            <h3 className="text-lg font-semibold mb-4">Admin Features</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>✓ View all user profiles</li>
-              <li>✓ Manage user roles</li>
-              <li>✓ System administration</li>
-              <li>✓ Analytics and reporting</li>
-            </ul>
-          </div>
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 mb-6 h-auto">
+              <TabsTrigger value="overview" className="text-xs sm:text-sm">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="customers" className="text-xs sm:text-sm">
+                Customers
+              </TabsTrigger>
+              <TabsTrigger value="tickets" className="text-xs sm:text-sm">
+                Tickets
+              </TabsTrigger>
+              <TabsTrigger value="notifications" className="text-xs sm:text-sm">
+                Notifications
+              </TabsTrigger>
+              <TabsTrigger value="audit" className="text-xs sm:text-sm">
+                Audit Log
+              </TabsTrigger>
+              <TabsTrigger value="settings" className="text-xs sm:text-sm">
+                Settings
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-4">
+              <div className="bg-card border border-border rounded-lg p-6 space-y-6">
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">Welcome Admin</h2>
+                  <p className="text-muted-foreground">Email: {user?.email}</p>
+                </div>
+
+                <div className="border-t border-border pt-6">
+                  <h3 className="text-lg font-semibold mb-4">Admin Features</h3>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li>✓ Manage support tickets</li>
+                    <li>✓ Monitor user activity</li>
+                    <li>✓ Manage notifications queue</li>
+                    <li>✓ View audit logs</li>
+                    <li>✓ System administration</li>
+                  </ul>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Customers Tab */}
+            <TabsContent value="customers">
+              <AdminCustomers />
+            </TabsContent>
+
+            {/* Tickets Tab */}
+            <TabsContent value="tickets">
+              <AdminTicketsInbox />
+            </TabsContent>
+
+            {/* Notifications Tab */}
+            <TabsContent value="notifications">
+              <NotificationQueueAdmin />
+            </TabsContent>
+
+            {/* Audit Log Tab */}
+            <TabsContent value="audit">
+              <AdminAuditLog />
+            </TabsContent>
+
+            {/* Settings Tab */}
+            <TabsContent value="settings">
+              <AdminSettings />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
+      <AdminFooter />
     </div>
   );
 }
