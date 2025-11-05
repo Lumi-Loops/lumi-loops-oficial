@@ -63,25 +63,8 @@ export function ClientDownloads() {
   );
 }
 
-// ClientNotifications - Notification center
-export function ClientNotifications() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Notifications</h2>
-        <p className="text-muted-foreground">
-          Messages and updates from your account manager
-        </p>
-      </div>
-      <Card>
-        <CardContent className="p-8 text-center">
-          <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-3 opacity-50" />
-          <p className="text-muted-foreground">No notifications yet</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
+// ClientNotifications moved to ClientNotifications.tsx
+// This is now imported from there in ClientDashboard
 
 // ClientPayments - Invoice and payment history
 export function ClientPayments() {

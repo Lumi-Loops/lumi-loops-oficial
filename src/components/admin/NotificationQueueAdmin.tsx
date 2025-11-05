@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,7 +41,7 @@ interface NotificationQueueItem {
   updated_at: string;
 }
 
-const statusIcons: Record<string, JSX.Element> = {
+const statusIcons: Record<string, ReactNode> = {
   queued: <Clock className="w-4 h-4" />,
   sending: <RotateCw className="w-4 h-4 animate-spin" />,
   sent: <CheckCircle className="w-4 h-4" />,
@@ -102,8 +102,10 @@ export function NotificationQueueAdmin() {
       });
 
       setStats(newStats);
-    } catch (error: any) {
-      console.error("Error fetching notifications:", error?.message || error);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error("Error fetching notifications:", errorMessage);
       setItems([]);
     } finally {
       setLoading(false);
@@ -152,6 +154,74 @@ export function NotificationQueueAdmin() {
     } catch (error) {
       console.error("Error skipping notification:", error);
     }
+  };
+
+  const renderTableBody = () => {
+    if (loading) {
+      return (
+        <TableRow>
+          <TableCell colSpan={6} className="text-center">
+            Loading...
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (items.length === 0) {
+      return (
+        <TableRow>
+          <TableCell colSpan={6} className="text-center">
+            No notifications found
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return items.map((item) => (
+      <TableRow key={item.id}>
+        <TableCell>
+          <div className="flex items-center gap-2">
+            {statusIcons[item.status]}
+            <Badge className={statusColors[item.status]}>{item.status}</Badge>
+          </div>
+        </TableCell>
+        <TableCell className="text-sm">{item.notification_type}</TableCell>
+        <TableCell className="font-mono text-sm">
+          {item.recipient_user_id.substring(0, 12)}...
+        </TableCell>
+        <TableCell className="text-sm">
+          {item.retry_count} / {item.max_retries}
+        </TableCell>
+        <TableCell className="text-sm">
+          {new Date(item.created_at).toLocaleString()}
+        </TableCell>
+        <TableCell>
+          <div className="flex gap-2">
+            {item.status === "failed" &&
+              item.retry_count < item.max_retries && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => retryNotification(item.id)}
+                  title="Retry"
+                >
+                  Retry
+                </Button>
+              )}
+            {item.status !== "sent" && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => skipNotification(item.id)}
+                title="Skip"
+              >
+                Skip
+              </Button>
+            )}
+          </div>
+        </TableCell>
+      </TableRow>
+    ));
   };
 
   return (
@@ -217,71 +287,7 @@ export function NotificationQueueAdmin() {
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    Loading...
-                  </TableCell>
-                </TableRow>
-              ) : items.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    No notifications found
-                  </TableCell>
-                </TableRow>
-              ) : (
-                items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        {statusIcons[item.status]}
-                        <Badge className={statusColors[item.status]}>
-                          {item.status}
-                        </Badge>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {item.notification_type}
-                    </TableCell>
-                    <TableCell className="font-mono text-sm">
-                      {item.recipient_user_id.substring(0, 12)}...
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {item.retry_count} / {item.max_retries}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {new Date(item.created_at).toLocaleString()}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {item.status === "failed" &&
-                          item.retry_count < item.max_retries && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => retryNotification(item.id)}
-                              title="Retry"
-                            >
-                              Retry
-                            </Button>
-                          )}
-                        {item.status !== "sent" && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => skipNotification(item.id)}
-                            title="Skip"
-                          >
-                            Skip
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
+            <TableBody>{renderTableBody()}</TableBody>
           </Table>
         </div>
 

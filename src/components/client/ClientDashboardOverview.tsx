@@ -24,7 +24,9 @@ export function ClientDashboardOverview() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data: session } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
         if (!session?.user?.id) return;
 
         const userId = session.user.id;
@@ -147,7 +149,7 @@ export function ClientDashboardOverview() {
         <CardContent className="space-y-3">
           {stats.activeInquiries > 0 && (
             <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-              <AlertCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <AlertCircle className="w-5 h-5 text-primary mt-0.5 shrink-0" />
               <div className="flex-1">
                 <p className="font-medium text-sm">
                   You have {stats.activeInquiries} active inquiries
@@ -164,7 +166,7 @@ export function ClientDashboardOverview() {
 
           {stats.upcomingAppointments === 0 && (
             <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-              <Calendar className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <Calendar className="w-5 h-5 text-primary mt-0.5 shrink-0" />
               <div className="flex-1">
                 <p className="font-medium text-sm">Schedule an appointment</p>
                 <p className="text-xs text-muted-foreground">
@@ -179,7 +181,7 @@ export function ClientDashboardOverview() {
 
           {stats.activePackages > 0 && (
             <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-              <Package className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <Package className="w-5 h-5 text-primary mt-0.5 shrink-0" />
               <div className="flex-1">
                 <p className="font-medium text-sm">View your active packages</p>
                 <p className="text-xs text-muted-foreground">

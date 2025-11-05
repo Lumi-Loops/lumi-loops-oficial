@@ -1,16 +1,33 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseEnv } from "@/utils/env";
 
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const supabase = createServerComponentClient({
-      cookies: () => cookieStore,
+    const { url, anonKey } = getSupabaseEnv();
+    const supabase = createServerClient(url, anonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // Ignore errors
+          }
+        },
+      },
     });
 
-    const { data: session } = await supabase.auth.getSession();
-    if (!session?.user) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -65,12 +82,28 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const supabase = createServerComponentClient({
-      cookies: () => cookieStore,
+    const { url, anonKey } = getSupabaseEnv();
+    const supabase = createServerClient(url, anonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // Ignore errors
+          }
+        },
+      },
     });
 
-    const { data: session } = await supabase.auth.getSession();
-    if (!session?.user) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -100,7 +133,7 @@ export async function PATCH(request: NextRequest) {
 
     // Log audit trail
     await supabase.from("admin_audit_log").insert({
-      admin_id: session.user.id,
+      admin_id: user.id,
       action: "update",
       target_type: "support_ticket",
       target_id: ticketId,

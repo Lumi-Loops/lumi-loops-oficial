@@ -10,9 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Calendar, MessageSquare } from "lucide-react";
+import { InquiryStatus } from "@/types/inquiry";
 
 interface InquiryCardProps {
-  id: string;
+  _id?: string;
+  id?: string;
   name: string;
   email: string;
   businessName?: string;
@@ -22,7 +24,7 @@ interface InquiryCardProps {
   goal?: string;
   budgetRange?: string;
   contactPreference?: string;
-  status: "new" | "responded" | "scheduled" | "closed";
+  status: InquiryStatus;
   createdAt: string;
   onRespond?: () => void;
   onSchedule?: () => void;
@@ -30,25 +32,48 @@ interface InquiryCardProps {
   compact?: boolean;
 }
 
-const statusConfig = {
+const statusConfig: Record<
+  InquiryStatus,
+  { label: string; variant: "default" | "secondary" | "outline"; color: string }
+> = {
   new: {
     label: "New",
-    variant: "default" as const,
+    variant: "default",
     color: "bg-blue-100 text-blue-800",
+  },
+  viewed: {
+    label: "Viewed",
+    variant: "secondary",
+    color: "bg-cyan-100 text-cyan-800",
   },
   responded: {
     label: "Responded",
-    variant: "secondary" as const,
+    variant: "secondary",
     color: "bg-purple-100 text-purple-800",
   },
   scheduled: {
     label: "Scheduled",
-    variant: "secondary" as const,
+    variant: "secondary",
     color: "bg-green-100 text-green-800",
+  },
+  "in-progress": {
+    label: "In Progress",
+    variant: "secondary",
+    color: "bg-orange-100 text-orange-800",
+  },
+  rejected: {
+    label: "Rejected",
+    variant: "outline",
+    color: "bg-red-100 text-red-800",
+  },
+  completed: {
+    label: "Completed",
+    variant: "secondary",
+    color: "bg-emerald-100 text-emerald-800",
   },
   closed: {
     label: "Closed",
-    variant: "outline" as const,
+    variant: "outline",
     color: "bg-gray-100 text-gray-800",
   },
 };
@@ -103,7 +128,7 @@ export function InquiryCard({
                 {formattedDate}
               </p>
             </div>
-            <div className="flex gap-2 flex-shrink-0">
+            <div className="flex gap-2 shrink-0">
               {status === "new" && onRespond && (
                 <Button size="sm" variant="default" onClick={onRespond}>
                   <MessageSquare className="w-4 h-4" />

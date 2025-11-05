@@ -135,10 +135,12 @@ export const SignUpForm = ({
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/images/components/authentication/signup-image.png"
               alt="Signup Image"
-              className="absolute inset-0 h-full w-full object-cover"
+              fill
+              className="object-cover"
+              priority
             />
           </div>
         </CardContent>

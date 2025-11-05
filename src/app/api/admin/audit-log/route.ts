@@ -1,16 +1,53 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+
+interface AuditLog {
+  id: string;
+  admin_id: string;
+  action: string;
+  target_type: string;
+  target_id: string;
+  changes: Record<string, unknown>;
+  ip_address: string;
+  user_agent: string;
+  created_at: string;
+}
 
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const supabase = createServerComponentClient({
-      cookies: () => cookieStore,
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        { error: "Missing Supabase configuration" },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // Ignore errors
+          }
+        },
+      },
     });
 
-    const { data: session } = await supabase.auth.getSession();
-    if (!session?.user) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -62,7 +99,7 @@ export async function GET(request: NextRequest) {
         "Created At",
       ];
 
-      const rows = (data || []).map((log: any) => [
+      const rows = (data || []).map((log: AuditLog) => [
         log.id,
         log.admin_id,
         log.action,

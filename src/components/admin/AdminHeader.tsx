@@ -6,6 +6,7 @@ import Image from "next/image";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Briefcase, Package, ShoppingCart, Users } from "lucide-react";
+import { NotificationBell } from "@/components/NotificationBell";
 
 interface DashboardStats {
   totalCustomers: number;
@@ -32,61 +33,61 @@ export function AdminHeader() {
   const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
+        // Get current user
+        const { data: session } = await supabase.auth.getSession();
+        if (session.session?.user.id) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("email, full_name")
+            .eq("id", session.session.user.id)
+            .single();
 
-      // Get current user
-      const { data: session } = await supabase.auth.getSession();
-      if (session.session?.user.id) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("email, full_name")
-          .eq("id", session.session.user.id)
-          .single();
-
-        if (profile) {
-          setUser(profile);
+          if (profile) {
+            setUser(profile);
+          }
         }
+
+        // Fetch total customers (non-admin users)
+        const { count: customersCount } = await supabase
+          .from("profiles")
+          .select("*", { count: "exact" })
+          .neq("role", "admin");
+
+        // Fetch total packages
+        const { count: packagesCount } = await supabase
+          .from("packages")
+          .select("*", { count: "exact" });
+
+        // Fetch total sales (payments with status 'paid')
+        const { count: salesCount } = await supabase
+          .from("payments")
+          .select("*", { count: "exact" })
+          .eq("status", "paid");
+
+        // Fetch total appointments
+        const { count: appointmentsCount } = await supabase
+          .from("appointments")
+          .select("*", { count: "exact" });
+
+        setStats({
+          totalCustomers: customersCount || 0,
+          totalPackages: packagesCount || 0,
+          totalSales: salesCount || 0,
+          totalAppointments: appointmentsCount || 0,
+        });
+      } catch (error) {
+        console.error("Error fetching dashboard stats:", error);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // Fetch total customers (non-admin users)
-      const { count: customersCount } = await supabase
-        .from("profiles")
-        .select("*", { count: "exact" })
-        .neq("role", "admin");
-
-      // Fetch total packages
-      const { count: packagesCount } = await supabase
-        .from("packages")
-        .select("*", { count: "exact" });
-
-      // Fetch total sales (payments with status 'paid')
-      const { count: salesCount } = await supabase
-        .from("payments")
-        .select("*", { count: "exact" })
-        .eq("status", "paid");
-
-      // Fetch total appointments
-      const { count: appointmentsCount } = await supabase
-        .from("appointments")
-        .select("*", { count: "exact" });
-
-      setStats({
-        totalCustomers: customersCount || 0,
-        totalPackages: packagesCount || 0,
-        totalSales: salesCount || 0,
-        totalAppointments: appointmentsCount || 0,
-      });
-    } catch (error) {
-      console.error("Error fetching dashboard stats:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchData();
+  }, [supabase]);
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -109,7 +110,7 @@ export function AdminHeader() {
             <div className="flex justify-between items-start">
               <Link
                 href="/"
-                className="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0"
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0"
               >
                 <div className="relative h-6 w-24">
                   <Image
@@ -177,6 +178,7 @@ export function AdminHeader() {
                 </p>
                 <p className="text-xs text-muted-foreground">{user?.email}</p>
               </div>
+              <NotificationBell />
               <Button
                 onClick={handleSignOut}
                 disabled={signingOut}
@@ -203,7 +205,7 @@ export function AdminHeader() {
                   {loading ? "-" : stats.totalCustomers}
                 </p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                 <Users className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
             </div>
@@ -220,7 +222,7 @@ export function AdminHeader() {
                   {loading ? "-" : stats.totalPackages}
                 </p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg flex items-center justify-center shrink-0">
                 <Package className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
               </div>
             </div>
@@ -237,7 +239,7 @@ export function AdminHeader() {
                   {loading ? "-" : stats.totalSales}
                 </p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-chart-1/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-chart-1/10 rounded-lg flex items-center justify-center shrink-0">
                 <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-chart-1" />
               </div>
             </div>
@@ -254,7 +256,7 @@ export function AdminHeader() {
                   {loading ? "-" : stats.totalAppointments}
                 </p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-chart-2/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-chart-2/10 rounded-lg flex items-center justify-center shrink-0">
                 <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-chart-2" />
               </div>
             </div>

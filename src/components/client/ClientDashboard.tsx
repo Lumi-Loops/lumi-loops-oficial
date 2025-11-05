@@ -21,12 +21,13 @@ import { ClientInquiries } from "./ClientInquiries";
 import {
   ClientAppointments,
   ClientDownloads,
-  ClientNotifications,
   ClientPackages,
   ClientPayments,
   ClientProfile,
 } from "./ClientStubs";
+import { ClientNotifications } from "./ClientNotifications";
 import { ClientContactButton } from "./ClientContactButton";
+import { NotificationBell } from "@/components/NotificationBell";
 
 type ActiveTab =
   | "overview"
@@ -181,7 +182,8 @@ export function ClientDashboard() {
               <p className="text-sm text-muted-foreground">{user?.email}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <NotificationBell />
             <span className="hidden sm:inline text-sm text-muted-foreground">
               {user?.email?.split("@")[0]}
             </span>

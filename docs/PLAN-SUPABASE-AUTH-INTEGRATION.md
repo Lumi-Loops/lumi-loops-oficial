@@ -104,6 +104,7 @@
    - **Herramienta MCP:** `supabase-lumiloops-oficial` para RLS en tabla
 
 4. **Generar/Ejecutar Migraciones Iniciales**
+
    ```bash
    npx prisma migrate dev --name init
    ```

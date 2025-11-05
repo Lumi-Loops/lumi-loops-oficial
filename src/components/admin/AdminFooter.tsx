@@ -88,8 +88,8 @@ export function AdminFooter() {
                       Thank you for your feedback!
                     </p>
                     <p className="text-center text-sm text-muted-foreground">
-                      Your email client is opening. If it doesn't, please send
-                      an email to
+                      Your email client is opening. If it doesn&apos;t, please
+                      send an email to
                       <br />
                       <span className="font-semibold text-foreground">
                         alemardevs@gmail.com
@@ -166,7 +166,7 @@ export function AdminFooter() {
 
                     {/* Info Box */}
                     <div className="bg-muted/50 border border-border rounded-md p-3 flex gap-3">
-                      <AlertCircle className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
                       <p className="text-xs text-muted-foreground">
                         Your email client will open with the pre-filled form.
                         Review it before sending to ensure all information is

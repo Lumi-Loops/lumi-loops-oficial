@@ -21,13 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AlertCircle, CheckCircle, Send } from "lucide-react";
-
-interface Inquiry {
-  id: string;
-  name: string;
-  email: string;
-  business_name?: string;
-}
+import { Inquiry } from "@/types/inquiry";
 
 interface AdminInquiryResponseProps {
   inquiry: Inquiry;
@@ -45,9 +39,9 @@ export function AdminInquiryResponse({
   const supabase = createClient();
   const [subject, setSubject] = useState(`Re: Inquiry from ${inquiry.name}`);
   const [message, setMessage] = useState("");
-  const [nextAction, setNextAction] = useState<"responded" | "scheduled">(
-    "responded"
-  );
+  const [nextAction, setNextAction] = useState<
+    "responded" | "scheduled" | "in-progress"
+  >("responded");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
@@ -168,7 +162,9 @@ export function AdminInquiryResponse({
               <Select
                 value={nextAction}
                 onValueChange={(value) =>
-                  setNextAction(value as "responded" | "scheduled")
+                  setNextAction(
+                    value as "responded" | "scheduled" | "in-progress"
+                  )
                 }
               >
                 <SelectTrigger id="nextAction" className="border-border">
@@ -177,13 +173,14 @@ export function AdminInquiryResponse({
                 <SelectContent>
                   <SelectItem value="responded">Responded</SelectItem>
                   <SelectItem value="scheduled">Scheduled for Call</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Info Alert */}
             <div className="bg-blue-50 border border-blue-200 rounded-md p-3 flex gap-3">
-              <AlertCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
               <p className="text-xs text-blue-800">
                 Your default email client will open with this message
                 pre-filled. Review and send from there.
@@ -193,7 +190,7 @@ export function AdminInquiryResponse({
             {/* Error Message */}
             {errorMessage && (
               <div className="bg-red-50 border border-red-200 rounded-md p-3 flex gap-3">
-                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <p className="text-xs text-red-800">{errorMessage}</p>
               </div>
             )}

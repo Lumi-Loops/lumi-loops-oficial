@@ -14,25 +14,9 @@ import {
 import { InquiryCard } from "./InquiryCard";
 import { AdminInquiryResponse } from "./AdminInquiryResponse";
 import { AlertCircle, Filter } from "lucide-react";
+import { Inquiry, InquiryStatus } from "@/types/inquiry";
 
-interface Inquiry {
-  id: string;
-  name: string;
-  email: string;
-  business_name: string | null;
-  content_type: string[] | null;
-  platforms: string[] | null;
-  examples: string[] | null;
-  goal: string | null;
-  budget_range: string | null;
-  contact_preference: string | null;
-  message: string | null;
-  status: "new" | "responded" | "scheduled" | "closed";
-  created_at: string;
-  updated_at: string;
-}
-
-type StatusFilter = "all" | "new" | "responded" | "scheduled" | "closed";
+type StatusFilter = "all" | InquiryStatus;
 
 export function AdminInquiries() {
   const supabase = createClient();
@@ -45,6 +29,8 @@ export function AdminInquiries() {
     new: 0,
     responded: 0,
     scheduled: 0,
+    "in-progress": 0,
+    completed: 0,
     closed: 0,
     total: 0,
   });
@@ -81,6 +67,8 @@ export function AdminInquiries() {
         new: 0,
         responded: 0,
         scheduled: 0,
+        "in-progress": 0,
+        completed: 0,
         closed: 0,
         total: data?.length || 0,
       };
@@ -216,6 +204,12 @@ export function AdminInquiries() {
             </SelectItem>
             <SelectItem value="scheduled">
               Scheduled ({stats.scheduled})
+            </SelectItem>
+            <SelectItem value="in-progress">
+              In Progress ({stats["in-progress"]})
+            </SelectItem>
+            <SelectItem value="completed">
+              Completed ({stats.completed})
             </SelectItem>
             <SelectItem value="closed">Closed ({stats.closed})</SelectItem>
           </SelectContent>

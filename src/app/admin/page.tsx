@@ -11,7 +11,7 @@ import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminCustomers } from "@/components/admin/AdminCustomers";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminFooter } from "@/components/admin/AdminFooter";
-import { AdminInquiries } from "@/components/admin/AdminInquiries";
+import { AdminInquiriesManagement } from "@/components/admin/AdminInquiriesManagement";
 
 export default function AdminPage() {
   return (
@@ -86,7 +86,7 @@ function AdminContent() {
 
             {/* Inquiries Tab */}
             <TabsContent value="inquiries">
-              <AdminInquiries />
+              <AdminInquiriesManagement />
             </TabsContent>
 
             {/* Customers Tab */}
