@@ -50,28 +50,26 @@ export function Navbar() {
   const supabase = createClient();
 
   useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user?.id)
+          .single();
+        if (data) {
+          setUserRole(data.role);
+        }
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+      }
+    };
     if (user?.id) {
       fetchUserRole();
     }
-  }, [user?.id]);
+  }, [user?.id, supabase]);
 
-  const fetchUserRole = async () => {
-    try {
-      const { data } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user?.id)
-        .single();
-      if (data) {
-        setUserRole(data.role);
-      }
-    } catch (error) {
-      console.error("Error fetching user role:", error);
-    }
-  };
-
-  const userDashboardLink =
-    userRole === "admin" ? "/admin" : "/dashboard/profile";
+  const userDashboardLink = userRole === "admin" ? "/admin" : "/dashboard";
 
   const scrollToSection = (href: string) => {
     console.warn("🚀 Attempting to scroll to:", href);

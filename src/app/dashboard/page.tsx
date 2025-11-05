@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserRole } from "@/hooks/useUserRole";
 import { AuthGuard } from "@/components/auth/AuthGuard";
+import { ClientDashboard } from "@/components/client/ClientDashboard";
 
 export default function DashboardPage() {
   return (
@@ -18,21 +19,25 @@ function DashboardContent() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading) {
-      if (role === "admin") {
-        router.push("/admin");
-      } else if (role === "client") {
-        router.push("/dashboard/profile");
-      }
+    if (!loading && role === "admin") {
+      router.push("/admin");
     }
   }, [role, loading, router]);
 
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">Loading...</h1>
-        <p className="text-muted-foreground">Redirecting to your dashboard</p>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Loading...</h1>
+          <p className="text-muted-foreground">Preparing your dashboard</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (role === "admin") {
+    return null; // Will redirect to /admin
+  }
+
+  return <ClientDashboard />;
 }
