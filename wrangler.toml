@@ -11,13 +11,21 @@ compatibility_flags = ["nodejs_compat"]
 directory = ".open-next/assets"
 binding = "ASSETS"
 
-# Environments
-# Dev environment (separate Worker for previews/QA)
-[env.dev]
+# Global non-sensitive configuration
+vars = { SITE_NAME = "Lumi Loops" }
+
+# Development environment (local preview)
+# Load variables from .dev.vars file
+[env.development]
 name = "lumiloops-oficial-dev"
 vars = { ENV = "development" }
+# Secrets are loaded from .dev.vars in development
+# Example in .dev.vars:
+# RESEND_API_KEY=your_key_here
+# NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
-# Prod environment (stable)
-[env.prod]
+# Production environment (stable/live)
+[env.production]
 name = "lumiloops-oficial"
 vars = { ENV = "production" }
+# Secrets must be set via: wrangler secret put SECRET_NAME --env production
