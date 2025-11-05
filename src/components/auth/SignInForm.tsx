@@ -13,6 +13,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 export const SignInForm = ({
   className,
@@ -46,7 +47,15 @@ export const SignInForm = ({
         <CardContent className="grid p-0 md:grid-cols-2">
           <form onSubmit={handleSubmit} className="p-6 md:p-8">
             <FieldGroup>
-              <div className="flex flex-col items-center gap-2 text-center">
+              <div className="flex flex-col items-center gap-4 text-center">
+                <Image
+                  src="/logo/lumiloops-logo-name.png"
+                  alt="Lumiloops Logo"
+                  width={150}
+                  height={40}
+                  priority
+                  className="h-auto w-auto"
+                />
                 <h1 className="text-2xl font-bold">Sign in</h1>
                 <p className="text-muted-foreground text-sm text-balance">
                   Enter your credentials to access your account
@@ -103,9 +112,9 @@ export const SignInForm = ({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src="/images/components/authentication/signin-image.png"
               alt="Signin Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </CardContent>

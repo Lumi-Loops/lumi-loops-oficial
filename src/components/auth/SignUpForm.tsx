@@ -13,6 +13,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 export const SignUpForm = ({
   className,
@@ -53,7 +54,15 @@ export const SignUpForm = ({
         <CardContent className="grid p-0 md:grid-cols-2">
           <form onSubmit={handleSubmit} className="p-6 md:p-8">
             <FieldGroup>
-              <div className="flex flex-col items-center gap-2 text-center">
+              <div className="flex flex-col items-center gap-4 text-center">
+                <Image
+                  src="/logo/lumiloops-logo-name.png"
+                  alt="Lumiloops Logo"
+                  width={150}
+                  height={40}
+                  priority
+                  className="h-auto w-auto"
+                />
                 <h1 className="text-2xl font-bold">Create your account</h1>
                 <p className="text-muted-foreground text-sm text-balance">
                   Enter your email below to create your account
@@ -127,9 +136,9 @@ export const SignUpForm = ({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src="/images/components/authentication/signup-image.png"
               alt="Signup Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </CardContent>
