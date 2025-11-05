@@ -19,16 +19,24 @@ export async function GET(_request: NextRequest) {
       .single();
 
     if (error) {
+      console.error("Supabase error fetching profile:", error);
       return NextResponse.json(
-        { error: "Failed to fetch user role" },
+        { error: "Failed to fetch user role", details: error.message },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ role: profile?.role || "client" });
-  } catch (_error) {
+    if (!profile) {
+      console.warn("No profile found for user:", user.id);
+      return NextResponse.json({ role: "client" });
+    }
+
+    return NextResponse.json({ role: profile.role || "client" });
+  } catch (err) {
+    const error = err instanceof Error ? err.message : "Unknown error";
+    console.error("Error in /api/user/role:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", details: error },
       { status: 500 }
     );
   }

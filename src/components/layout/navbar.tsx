@@ -145,11 +145,17 @@ export function Navbar() {
                     <Link href="/auth/signin">
                       <Button variant="outline">Sign In</Button>
                     </Link>
-                    <Link href="/auth/signup">
-                      <Button className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-linear-to-r">
-                        Sign Up
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        onClick={() => scrollToSection("#contacto")}
+                        className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-linear-to-r"
+                      >
+                        Get Started
                       </Button>
-                    </Link>
+                    </motion.div>
                   </>
                 )}
               </>
@@ -211,11 +217,15 @@ export function Navbar() {
                           Sign In
                         </Button>
                       </Link>
-                      <Link href="/auth/signup" className="block">
-                        <Button className="from-primary to-primary/80 w-full bg-linear-to-r">
-                          Sign Up
-                        </Button>
-                      </Link>
+                      <Button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          scrollToSection("#contacto");
+                        }}
+                        className="from-primary to-primary/80 w-full bg-linear-to-r"
+                      >
+                        Get Started
+                      </Button>
                     </>
                   )}
                 </>
