@@ -41,6 +41,10 @@ interface NotificationQueueItem {
   updated_at: string;
 }
 
+interface NotificationQueueAdminProps {
+  selectedNotificationId?: string | null;
+}
+
 const statusIcons: Record<string, ReactNode> = {
   queued: <Clock className="w-4 h-4" />,
   sending: <RotateCw className="w-4 h-4 animate-spin" />,
@@ -55,7 +59,7 @@ const statusColors: Record<string, string> = {
   failed: "bg-red-100 text-red-800",
 };
 
-export function NotificationQueueAdmin() {
+export function NotificationQueueAdmin(): NotificationQueueAdminProps {
   const supabase = createClient();
   const [items, setItems] = useState<NotificationQueueItem[]>([]);
   const [loading, setLoading] = useState(true);

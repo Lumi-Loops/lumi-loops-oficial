@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/layout/Logo";
@@ -82,8 +83,40 @@ const navItems: NavItem[] = [
 
 export function ClientDashboard() {
   const { user, signOut } = useAuth();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedNotificationId, setSelectedNotificationId] = useState<
+    string | null
+  >(null);
+
+  // Read tab and notification id from URL
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    const notificationIdParam = searchParams.get("id");
+
+    if (
+      tabParam &&
+      (
+        [
+          "overview",
+          "inquiries",
+          "appointments",
+          "packages",
+          "downloads",
+          "notifications",
+          "payments",
+          "profile",
+        ] as ActiveTab[]
+      ).includes(tabParam as ActiveTab)
+    ) {
+      setActiveTab(tabParam as ActiveTab);
+    }
+
+    if (notificationIdParam) {
+      setSelectedNotificationId(notificationIdParam);
+    }
+  }, [searchParams]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -102,7 +135,11 @@ export function ClientDashboard() {
       case "downloads":
         return <ClientDownloads />;
       case "notifications":
-        return <ClientNotifications />;
+        return (
+          <ClientNotifications
+            selectedNotificationId={selectedNotificationId}
+          />
+        );
       case "payments":
         return <ClientPayments />;
       case "profile":

@@ -31,7 +31,13 @@ interface ClientNotification {
   updated_at: string;
 }
 
-export function ClientNotifications() {
+interface ClientNotificationsProps {
+  selectedNotificationId?: string | null;
+}
+
+export function ClientNotifications({
+  selectedNotificationId,
+}: ClientNotificationsProps) {
   const supabase = createClient();
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<ClientNotification[]>([]);
@@ -181,6 +187,18 @@ export function ClientNotifications() {
       </div>
     );
   };
+
+  // Mark selected notification as read when component loads
+  useEffect(() => {
+    if (selectedNotificationId && notifications.length > 0) {
+      const notification = notifications.find(
+        (n) => n.id === selectedNotificationId
+      );
+      if (notification && !notification.read) {
+        markAsRead(selectedNotificationId);
+      }
+    }
+  }, [selectedNotificationId]);
 
   useEffect(() => {
     if (user) {
