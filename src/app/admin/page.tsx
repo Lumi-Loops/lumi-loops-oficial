@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { AdminGuard } from "@/components/auth/AdminGuard";
 import { useAuth } from "@/hooks/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdminTicketsInbox } from "@/components/admin/AdminTicketsInbox";
 import { AdminAuditLog } from "@/components/admin/AdminAuditLog";
-import { NotificationQueueAdmin } from "@/components/admin/NotificationQueueAdmin";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminCustomers } from "@/components/admin/AdminCustomers";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminFooter } from "@/components/admin/AdminFooter";
 import { AdminInquiriesManagement } from "@/components/admin/AdminInquiriesManagement";
+import { AdminInquiryNotificationsList } from "@/components/admin/AdminInquiryNotificationsList";
 
 export default function AdminPage() {
   return (
@@ -23,7 +24,22 @@ export default function AdminPage() {
 
 function AdminContent() {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Read tab and notification id from URL
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    const notificationIdParam = searchParams.get("id");
+
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+
+    if (notificationIdParam) {
+      setSelectedNotificationId(notificationIdParam);
+    }
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,7 +117,7 @@ function AdminContent() {
 
             {/* Notifications Tab */}
             <TabsContent value="notifications">
-              <NotificationQueueAdmin />
+              <AdminInquiryNotificationsList />
             </TabsContent>
 
             {/* Audit Log Tab */}

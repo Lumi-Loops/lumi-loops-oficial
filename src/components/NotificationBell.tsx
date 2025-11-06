@@ -14,10 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
-import {
-  formatNotificationTime,
-  getNotificationConfig,
-} from "@/utils/notifications";
+import { formatNotificationTime } from "@/utils/notifications";
 import { useNotificationSound } from "@/hooks/useNotificationSound";
 import { useRealtimeNotifications } from "@/hooks/useRealtimeNotifications";
 
@@ -64,18 +61,19 @@ export function NotificationBell() {
   const handleNotificationClick = async (notification: {
     id: string;
     read?: boolean;
+    response_id?: string;
     inquiry_id?: string;
     notification_type?: string;
     action_url?: string;
     title?: string;
+    message?: string;
   }) => {
     try {
-      const isClientNotif =
-        "inquiry_id" in notification &&
-        !notification.notification_type?.includes("_inquiry");
+      // Determine if it's a client or admin notification based on user role
+      const isClientNotif = userRole !== "admin";
       const table = isClientNotif
         ? "client_notifications"
-        : "admin_notifications_queue";
+        : "admin_inquiry_notifications";
 
       // Mark as read
       await supabase
@@ -85,18 +83,17 @@ export function NotificationBell() {
 
       // Navigate
       if (isClientNotif) {
-        router.push(notification.action_url || "/dashboard?tab=inquiries");
-      } else if (notification.notification_type) {
-        const config = getNotificationConfig(
-          notification.notification_type as
-            | "new_inquiry"
-            | "new_client_inquiry"
-            | "inquiry_status_change"
-            | "appointment_scheduled"
-            | "payment_received"
-            | "other"
+        // For client notifications, navigate to client dashboard with notifications tab and notification id
+        router.push(
+          notification.action_url ||
+            `/dashboard?tab=notifications&id=${notification.id}`
         );
-        router.push(config.getUrl(notification.inquiry_id));
+      } else {
+        // For admin inquiry notifications, navigate to the inquiry
+        const inquiryId = notification.inquiry_id || notification.response_id;
+        if (inquiryId) {
+          router.push(`/admin?tab=inquiries&id=${inquiryId}`);
+        }
       }
 
       setIsOpen(false);
@@ -127,31 +124,22 @@ export function NotificationBell() {
     return (
       <>
         {notifications.map((notification) => {
-          const isClientNotif =
-            "inquiry_id" in notification &&
-            !notification.notification_type?.includes("_inquiry");
+          // Determine if it's a client or admin notification based on user role
+          const isClientNotif = userRole !== "admin";
           const isUnread = !notification.read;
           let title = "";
+          let subtitle = "";
           let icon = "🔔";
 
           if (isClientNotif) {
             title = notification.title || "Notification";
+            subtitle = notification.message || "";
             icon = "📢";
-          } else if (notification.notification_type) {
-            const config = getNotificationConfig(
-              notification.notification_type as
-                | "new_inquiry"
-                | "new_client_inquiry"
-                | "inquiry_status_change"
-                | "appointment_scheduled"
-                | "payment_received"
-                | "other"
-            );
-            title = config.title;
-            icon = config.icon;
           } else {
-            title = "Notification";
-            icon = "📢";
+            // For admin inquiry notifications, use title and message directly
+            title = notification.title || "New Inquiry";
+            subtitle = notification.message || "";
+            icon = "📋"; // Inquiry icon for admin
           }
 
           return (
@@ -165,13 +153,18 @@ export function NotificationBell() {
               <div className="flex items-start gap-2 w-full">
                 <span className="text-lg mt-0.5">{icon}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-1">
                     <p className="font-medium text-sm truncate">{title}</p>
                     {isUnread && (
                       <div className="h-2 w-2 rounded-full bg-primary shrink-0" />
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  {subtitle && (
+                    <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
+                      {subtitle}
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
                     {formatNotificationTime(notification.created_at)}
                   </p>
                 </div>
@@ -183,7 +176,12 @@ export function NotificationBell() {
         <DropdownMenuItem
           className="justify-center text-sm text-primary cursor-pointer py-2"
           onClick={() => {
-            router.push("/admin?tab=notifications");
+            // Navigate based on user role
+            if (userRole === "admin") {
+              router.push("/admin?tab=notifications");
+            } else {
+              router.push("/dashboard?tab=notifications");
+            }
             setIsOpen(false);
           }}
         >

@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
-import { getSupabaseEnv } from "@/utils/env";
+import { getSupabaseEnv, getSupabaseServiceKey } from "@/utils/env";
 
 const clientInquirySchema = z.object({
   content_type: z.array(z.string()).optional(),
@@ -79,29 +79,69 @@ export async function POST(request: NextRequest) {
       throw new Error("Failed to store inquiry");
     }
 
-    // 2. Create admin notification
-    const { data: admin } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("role", "admin")
-      .single();
+    // 2. Create admin notification using RPC function with service role key
+    try {
+      // Get admin using regular supabase client
+      const { data: admin } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("role", "admin")
+        .single();
 
-    if (admin) {
-      const { error: notifError } = await supabase
-        .from("admin_notifications_queue")
-        .insert({
-          response_id: inquiry.id, // Link to the inquiry
-          recipient_user_id: admin.id,
-          notification_type: "new_client_inquiry",
-          status: "sent",
-          read: false,
-          created_at: new Date().toISOString(),
-        });
+      if (admin) {
+        console.info(
+          "Creating notification for admin:",
+          admin.id,
+          "inquiry:",
+          inquiry.id
+        );
 
-      if (notifError) {
-        console.error("Error creating admin notification:", notifError);
-        // Don't fail the request - inquiry was saved
+        // Fetch client profile for richer notification content
+        const { data: clientProfile } = await supabase
+          .from("profiles")
+          .select("full_name, email")
+          .eq("id", user.id)
+          .single();
+
+        // Create admin-privileged client for notification creation
+        const { createClient } = await import("@supabase/supabase-js");
+        const { url, serviceKey } = getSupabaseServiceKey();
+        const supabaseAdmin = createClient(url, serviceKey);
+
+        // Build dynamic title and message with client info
+        const clientName = clientProfile?.full_name || "Unknown Client";
+        const clientEmail = clientProfile?.email || "unknown@email.com";
+        const contentTypesText = validatedData.content_type?.length
+          ? validatedData.content_type.join(", ")
+          : "General inquiry";
+
+        // Use RPC function with SECURITY DEFINER to bypass RLS
+        const { data: notifData, error: notifError } = await supabaseAdmin.rpc(
+          "create_admin_inquiry_notification",
+          {
+            p_admin_user_id: admin.id,
+            p_inquiry_id: inquiry.id,
+            p_inquiry_type: "client",
+            p_title: `New inquiry from ${clientName}`,
+            p_message: `${clientName} (${clientEmail}) submitted a new project inquiry requesting: ${contentTypesText}`,
+          }
+        );
+
+        if (notifError) {
+          console.error(
+            "Error creating admin notification:",
+            JSON.stringify(notifError, null, 2)
+          );
+        } else {
+          console.info(
+            "Admin inquiry notification created successfully:",
+            notifData
+          );
+        }
       }
+    } catch (err) {
+      console.error("Error in notification creation:", err);
+      // Don't fail the request - inquiry was saved
     }
 
     return NextResponse.json(

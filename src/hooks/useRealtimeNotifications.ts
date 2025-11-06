@@ -25,9 +25,9 @@ export function useRealtimeNotifications(
   const getQueryConfig = useCallback(() => {
     if (userRole === "admin") {
       return {
-        table: "admin_notifications_queue",
-        filter: `recipient_user_id=eq.${userId}`,
-        column: "recipient_user_id",
+        table: "admin_inquiry_notifications",
+        filter: `admin_user_id=eq.${userId}`,
+        column: "admin_user_id",
       };
     } else {
       return {
@@ -103,7 +103,8 @@ export function useRealtimeNotifications(
     const setupRealtime = async () => {
       try {
         const config = getQueryConfig();
-        const channel = supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const channel = (supabase as any)
           .channel(`notifications:${userId}`)
           .on(
             "postgres_changes",
@@ -113,6 +114,7 @@ export function useRealtimeNotifications(
               table: config.table,
               filter: config.filter,
             },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (payload: any) => {
               console.info("Realtime update received:", payload);
               // Refetch on any change
