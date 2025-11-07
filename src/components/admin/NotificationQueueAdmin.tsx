@@ -59,7 +59,9 @@ const statusColors: Record<string, string> = {
   failed: "bg-red-100 text-red-800",
 };
 
-export function NotificationQueueAdmin(): NotificationQueueAdminProps {
+export function NotificationQueueAdmin({
+  selectedNotificationId: _selectedNotificationId,
+}: NotificationQueueAdminProps) {
   const supabase = createClient();
   const [items, setItems] = useState<NotificationQueueItem[]>([]);
   const [loading, setLoading] = useState(true);

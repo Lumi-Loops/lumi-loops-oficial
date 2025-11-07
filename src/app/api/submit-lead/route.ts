@@ -2,11 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
-import { getSupabaseEnv } from "@/utils/env";
+import { getSupabaseEnv, getSupabaseServiceKey } from "@/utils/env";
+import { sendVisitorConfirmationEmail } from "@/lib/email/sendVisitorConfirmationEmail";
 
 const leadFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().trim().email("Invalid email address"),
   business_name: z.string().nullable().optional(),
   content_type: z.array(z.string()).optional(),
   platforms: z.array(z.string()).optional(),
@@ -14,7 +15,7 @@ const leadFormSchema = z.object({
   goal: z.string().nullable().optional(),
   budget_range: z.string().nullable().optional(),
   contact_preference: z.string().nullable().optional(),
-  message: z.string().nullable().optional(),
+  message: z.string().trim().min(1, "Message is required"),
 });
 
 export async function POST(request: NextRequest) {
@@ -23,6 +24,9 @@ export async function POST(request: NextRequest) {
 
     // Validate request data
     const validatedData = leadFormSchema.parse(body);
+
+    // Normalize email to avoid CHECK constraint violations
+    const normalizedEmail = validatedData.email.trim().toLowerCase();
 
     const cookieStore = await cookies();
     const { url, anonKey } = getSupabaseEnv();
@@ -66,7 +70,7 @@ export async function POST(request: NextRequest) {
       .from("visitor_inquiries")
       .insert({
         name: validatedData.name,
-        email: validatedData.email,
+        email: normalizedEmail,
         business_name: validatedData.business_name || null,
         content_type: validatedData.content_type || [],
         platforms: validatedData.platforms || [],
@@ -74,35 +78,84 @@ export async function POST(request: NextRequest) {
         goal: validatedData.goal || null,
         budget_range: validatedData.budget_range || null,
         contact_preference: validatedData.contact_preference || null,
-        message: validatedData.message || null,
+        message: validatedData.message,
         status: "new",
         created_at: new Date().toISOString(),
       })
       .select()
       .single();
 
+    // Helper to safely extract a readable error message without using 'any'
+    const extractErrorMessage = (err: unknown): string | undefined => {
+      if (err && typeof err === "object" && "message" in err) {
+        const msg = (err as { message?: unknown }).message;
+        return typeof msg === "string" ? msg : undefined;
+      }
+      return undefined;
+    };
+
     if (inquiryError) {
-      console.error("Error storing inquiry:", inquiryError);
-      throw new Error("Failed to store inquiry");
+      const readable = extractErrorMessage(inquiryError);
+      console.error("Error storing inquiry:", readable ?? inquiryError);
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            readable ?? "Invalid email format or data constraint violation",
+        },
+        { status: 400 }
+      );
     }
 
-    // 2. Create admin notification for visitor inquiry
+    // 2. Send confirmation email to visitor
     try {
-      const { data: adminSession } = await supabase
+      await sendVisitorConfirmationEmail({
+        name: validatedData.name,
+        email: validatedData.email,
+        inquiryId: inquiry.id,
+      });
+      console.info("Confirmation email sent to visitor:", validatedData.email);
+    } catch (err) {
+      console.error("Error sending visitor confirmation email:", err);
+      // Don't fail the request - inquiry was saved
+    }
+
+    // 3. Create admin notification for visitor inquiry using RPC
+    try {
+      const { url, serviceKey } = getSupabaseServiceKey();
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabaseAdmin = createClient(url, serviceKey);
+
+      const { data: adminProfile } = await supabaseAdmin
         .from("profiles")
         .select("id")
         .eq("role", "admin")
         .single();
 
-      if (adminSession) {
-        // Note: For visitor inquiries, we create a notification pointing to client_inquiries
-        // We need to create a placeholder record or handle this differently
-        // For now, we'll skip notifications for visitor inquiries
-        console.info("Visitor inquiry created:", inquiry.id);
+      if (adminProfile) {
+        console.warn("RPC Notification params:", {
+          adminProfile,
+          newInquiry: { id: inquiry.id, type: "visitor" },
+        });
+        const rpcResponse = await supabaseAdmin.rpc(
+          "create_admin_inquiry_notification",
+          {
+            p_admin_user_id: adminProfile.id,
+            p_inquiry_id: inquiry.id,
+            p_inquiry_type: "visitor",
+            p_title: `New visitor inquiry from ${validatedData.name}`,
+            p_message: `${validatedData.name} (${validatedData.email}) submitted a visitor inquiry.`,
+          }
+        );
+        console.warn("RPC result:", rpcResponse);
+        console.info(
+          "Admin notification created for visitor inquiry:",
+          inquiry.id
+        );
       }
     } catch (err) {
-      console.error("Error in notification creation:", err);
-      // Don't fail the request - inquiry was saved
+      console.error("Error creating admin notification:", err);
+      // Don't fail the request - inquiry was saved and email was sent
     }
 
     return NextResponse.json(

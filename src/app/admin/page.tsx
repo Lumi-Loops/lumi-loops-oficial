@@ -30,14 +30,9 @@ function AdminContent() {
   // Read tab and notification id from URL
   useEffect(() => {
     const tabParam = searchParams.get("tab");
-    const notificationIdParam = searchParams.get("id");
 
     if (tabParam) {
       setActiveTab(tabParam);
-    }
-
-    if (notificationIdParam) {
-      setSelectedNotificationId(notificationIdParam);
     }
   }, [searchParams]);
 

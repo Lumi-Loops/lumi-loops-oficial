@@ -35,6 +35,9 @@ interface UnifiedInquiry {
   goal?: string;
   budget_range?: string;
   user_id?: string; // client inquiries only
+  // Linking metadata for visitor inquiries
+  user_status?: "visitor" | "registered";
+  linked_user_id?: string | null;
 }
 
 export function AdminInquiriesManagement() {
@@ -86,6 +89,8 @@ export function AdminInquiriesManagement() {
           ...item,
           type: "visitor" as const,
           email: item.email,
+          user_status: item.user_status,
+          linked_user_id: item.linked_user_id ?? null,
         })
       );
 
@@ -308,6 +313,25 @@ export function AdminInquiriesManagement() {
                     <p className="text-sm text-muted-foreground">
                       {inquiry.email}
                     </p>
+                    {/* User status badge */}
+                    <div className="mt-2">
+                      {inquiry.type === "client" ||
+                      inquiry.user_status === "registered" ? (
+                        <Badge
+                          variant="default"
+                          className="bg-green-100 text-green-800"
+                        >
+                          Registered User
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="secondary"
+                          className="bg-purple-100 text-purple-800"
+                        >
+                          Visitor
+                        </Badge>
+                      )}
+                    </div>
                   </div>
 
                   {/* Status */}

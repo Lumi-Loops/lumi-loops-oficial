@@ -63,6 +63,7 @@ export function NotificationBell() {
     read?: boolean;
     response_id?: string;
     inquiry_id?: string;
+    visitor_inquiry_id?: string;
     notification_type?: string;
     action_url?: string;
     title?: string;
@@ -90,7 +91,11 @@ export function NotificationBell() {
         );
       } else {
         // For admin inquiry notifications, navigate to the inquiry
-        const inquiryId = notification.inquiry_id || notification.response_id;
+        // Support both client and visitor inquiries
+        const inquiryId =
+          notification.inquiry_id ||
+          notification.visitor_inquiry_id ||
+          notification.response_id;
         if (inquiryId) {
           router.push(`/admin?tab=inquiries&id=${inquiryId}`);
         }

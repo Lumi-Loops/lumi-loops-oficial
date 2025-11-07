@@ -12,7 +12,7 @@ import { InputTags } from "@/components/ui/input-tags";
 // Validación con Zod (debe coincidir con el backend)
 const leadFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().trim().email("Invalid email address"),
   business_name: z.string().optional(),
   content_type: z.array(z.string()).optional(),
   platforms: z.array(z.string()).optional(),
@@ -24,7 +24,7 @@ const leadFormSchema = z.object({
   contact_preference: z
     .enum(["Email proposal", "Book call", "Not sure"])
     .optional(),
-  message: z.string().optional(),
+  message: z.string().trim().min(1, "Message is required"),
 });
 
 type LeadFormData = z.infer<typeof leadFormSchema>;
@@ -91,10 +91,11 @@ export function LeadForm({
         throw new Error(result.error || "Failed to submit form");
       }
 
-      // Success toast
-      toast.success("Thank you! We'll contact you soon.", {
-        description: "Your request has been submitted successfully.",
-        duration: 5000,
+      // Success toast (per instrucciones_restaurar_toast_leadform.md)
+      toast.success("Your inquiry was sent successfully!", {
+        description:
+          "We’ve sent you a confirmation email — please check your inbox.",
+        duration: 8000,
       });
 
       // Reset form
@@ -104,8 +105,8 @@ export function LeadForm({
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
 
-      // Error toast
-      toast.error("Failed to submit request", {
+      // Error toast (per instrucciones_restaurar_toast_leadform.md)
+      toast.error("Failed to send inquiry", {
         description: errorMessage,
         duration: 5000,
       });
@@ -400,7 +401,7 @@ export function LeadForm({
             htmlFor="message"
             className="mb-2 block text-sm font-medium text-white"
           >
-            Additional Message (optional)
+            Additional Message
           </label>
           <textarea
             {...register("message")}
@@ -409,6 +410,11 @@ export function LeadForm({
             className="border-input bg-background focus:ring-ring w-full resize-none rounded-lg border px-4 py-2 transition-all focus:border-transparent focus:ring-2"
             placeholder="Tell us more about your project..."
           />
+          {errors.message && (
+            <p className="mt-1 text-sm text-red-600">
+              {errors.message.message}
+            </p>
+          )}
         </div>
 
         {/* Submit Button */}
