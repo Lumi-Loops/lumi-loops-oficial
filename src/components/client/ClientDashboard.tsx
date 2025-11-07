@@ -24,8 +24,8 @@ import {
   ClientDownloads,
   ClientPackages,
   ClientPayments,
-  ClientProfile,
 } from "./ClientStubs";
+import { ClientProfile } from "./ClientProfile";
 import { ClientNotifications } from "./ClientNotifications";
 import { ClientContactButton } from "./ClientContactButton";
 import { NotificationBell } from "@/components/NotificationBell";
@@ -89,6 +89,8 @@ export function ClientDashboard() {
   const [selectedNotificationId, setSelectedNotificationId] = useState<
     string | null
   >(null);
+  const [displayName, setDisplayName] = useState<string>("");
+  const [displayBusiness, setDisplayBusiness] = useState<string>("");
 
   // Read tab and notification id from URL
   useEffect(() => {
@@ -121,6 +123,24 @@ export function ClientDashboard() {
   const handleSignOut = async () => {
     await signOut();
   };
+
+  // Fetch profile info for header display
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const res = await fetch("/api/profile");
+        if (!res.ok) return;
+        const p = await res.json();
+        const name =
+          p.full_name || [p.first_name, p.last_name].filter(Boolean).join(" ");
+        setDisplayName(name || (user?.email ? user.email.split("@")[0] : ""));
+        setDisplayBusiness(p.business_name || "");
+      } catch (e) {
+        console.warn("Failed to load profile header info", e);
+      }
+    };
+    loadProfile();
+  }, [user?.id, user?.email]);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -215,8 +235,12 @@ export function ClientDashboard() {
               )}
             </button>
             <div>
-              <h1 className="text-2xl font-bold">Welcome back</h1>
-              <p className="text-sm text-muted-foreground">{user?.email}</p>
+              <h1 className="text-2xl font-bold">
+                {displayName ? `Hola, ${displayName}` : "Welcome back"}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {displayBusiness || user?.email}
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
