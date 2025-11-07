@@ -13,6 +13,11 @@ permissions:
 # page data collection; Resend constructor requires RESEND_API_KEY to be present).
 env:
   RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+  # Supabase environment variables used across browser/server clients during SSR/prerender
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  # Server-only: used by admin client in server code paths (not exposed to client bundles)
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
 jobs:
   deploy:
