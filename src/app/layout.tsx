@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,8 +42,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <ScrollToTop />
+          <AuthProvider>
+            {children}
+            <ScrollToTop />
+            {/* Global toast provider as per Sonner docs and project spec */}
+            <Toaster position="top-center" richColors />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

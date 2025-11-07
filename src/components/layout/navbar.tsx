@@ -9,6 +9,9 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScrollNavbar } from "@/hooks/use-scroll-navbar";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { createClient } from "@/utils/supabase/client";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
 // Scroll progress hook for premium navbar indicator
 function useScrollProgress() {
@@ -42,6 +45,31 @@ export function Navbar() {
   const { isScrolled } = useScrollNavbar();
   const scrollProgress = useScrollProgress();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user?.id)
+          .single();
+        if (data) {
+          setUserRole(data.role);
+        }
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+      }
+    };
+    if (user?.id) {
+      fetchUserRole();
+    }
+  }, [user?.id, supabase]);
+
+  const userDashboardLink = userRole === "admin" ? "/admin" : "/dashboard";
 
   const scrollToSection = (href: string) => {
     console.warn("🚀 Attempting to scroll to:", href);
@@ -128,14 +156,36 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden items-center space-x-4 md:flex">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                onClick={() => scrollToSection("#contacto")}
-                className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-linear-to-r"
-              >
-                Get Started
-              </Button>
-            </motion.div>
+            {!loading && (
+              <>
+                {user ? (
+                  <>
+                    <Link href={userDashboardLink}>
+                      <Button variant="outline">{user.email}</Button>
+                    </Link>
+                    <SignOutButton />
+                  </>
+                ) : (
+                  <>
+                    <Link href="/auth/signin">
+                      <Button variant="outline">Sign In</Button>
+                    </Link>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        onClick={() => scrollToSection("#contacto")}
+                        className="from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 bg-linear-to-r"
+                      >
+                        Get Started
+                      </Button>
+                    </motion.div>
+                  </>
+                )}
+              </>
+            )}
+            {loading && <Button disabled>Loading...</Button>}
           </div>
 
           {/* Mobile Menu Button */}
@@ -171,16 +221,40 @@ export function Navbar() {
                 {item.label}
               </button>
             ))}
-            <div className="px-4 pt-2">
-              <Button
-                onClick={() => {
-                  console.warn("Mobile CTA clicked: #contacto");
-                  scrollToSection("#contacto");
-                }}
-                className="from-primary to-primary/80 w-full bg-linear-to-r"
-              >
-                Get Started
-              </Button>
+            <div className="space-y-2 border-t border-border/50 px-4 pt-4">
+              {!loading && (
+                <>
+                  {user ? (
+                    <>
+                      <Link href={userDashboardLink} className="block">
+                        <Button variant="outline" className="w-full">
+                          {user.email}
+                        </Button>
+                      </Link>
+                      <div className="w-full">
+                        <SignOutButton />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Link href="/auth/signin" className="block">
+                        <Button variant="outline" className="w-full">
+                          Sign In
+                        </Button>
+                      </Link>
+                      <Button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          scrollToSection("#contacto");
+                        }}
+                        className="from-primary to-primary/80 w-full bg-linear-to-r"
+                      >
+                        Get Started
+                      </Button>
+                    </>
+                  )}
+                </>
+              )}
             </div>
           </div>
         )}
