@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+# Expose required env for build steps (Next.js/OpenNext may evaluate API routes during
+# page data collection; Resend constructor requires RESEND_API_KEY to be present).
+env:
+  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+
 jobs:
   deploy:
     if: github.event_name == 'push'
