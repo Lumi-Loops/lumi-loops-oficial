@@ -3,9 +3,26 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Strongly-typed status keys and template data to avoid `any` usage
+type EmailStatus =
+  | "viewed"
+  | "in-progress"
+  | "responded"
+  | "scheduled"
+  | "completed";
+interface EmailTemplateData {
+  clientName: string;
+}
+
+function isEmailStatus(s: string): s is EmailStatus {
+  return (
+    ["viewed", "in-progress", "responded", "scheduled", "completed"] as const
+  ).includes(s as EmailStatus);
+}
+
 const emailTemplates: Record<
-  string,
-  { subject: string; template: (data: any) => string }
+  EmailStatus,
+  { subject: string; template: (data: EmailTemplateData) => string }
 > = {
   viewed: {
     subject: "Your inquiry has been reviewed",
@@ -72,9 +89,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get email template
-    const emailConfig = emailTemplates[status];
-    if (!emailConfig) {
+    // Validate status and get email template
+    if (!isEmailStatus(status)) {
       // If no template for this status, just skip
       return NextResponse.json({
         success: true,
@@ -82,7 +98,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const { subject, template } = emailConfig;
+    const { subject, template } = emailTemplates[status];
     const htmlContent = template({ clientName });
 
     // Send email using Resend

@@ -13,6 +13,8 @@ permissions:
 # page data collection; Resend constructor requires RESEND_API_KEY to be present).
 env:
   RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+  # Public site origin used to build absolute links in emails and client code
+  NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
   # Supabase environment variables used across browser/server clients during SSR/prerender
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -21,6 +23,8 @@ env:
 
 jobs:
   deploy:
+    # Use environment-scoped secrets (dev for develop, prod for main)
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
     if: github.event_name == 'push'
     name: Deploy (${{ github.ref_name }})
     runs-on: ubuntu-latest
@@ -31,10 +35,21 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          # Pin Bun to a stable version to avoid CI regressions from "latest"
+          bun-version: 1.1.20
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Debug env presence (safe)
+        shell: bash
+        run: |
+          has() { [ -n "$1" ] && echo "present" || echo "missing"; }
+          echo "RESEND_API_KEY: $(has "$RESEND_API_KEY")"
+          echo "NEXT_PUBLIC_SITE_URL: $(has "$NEXT_PUBLIC_SITE_URL")"
+          echo "NEXT_PUBLIC_SUPABASE_URL: $(has "$NEXT_PUBLIC_SUPABASE_URL")"
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY: $(has "$NEXT_PUBLIC_SUPABASE_ANON_KEY")"
+          echo "SUPABASE_SERVICE_ROLE_KEY: $(has "$SUPABASE_SERVICE_ROLE_KEY")"
 
       - name: Build with OpenNext (generates .open-next)
         run: bunx opennextjs-cloudflare build
@@ -46,9 +61,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           # Run Wrangler inside the action container (bun is not available there)
           command: >-
-            deploy --env=${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+            deploy --env=${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
 
   preview:
+    # PRs use dev environment so environment-scoped secrets are available
+    environment: dev
     if: github.event_name == 'pull_request'
     name: Preview (PR)
     runs-on: ubuntu-latest
@@ -59,10 +76,20 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          bun-version: 1.1.20
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Debug env presence (safe)
+        shell: bash
+        run: |
+          has() { [ -n "$1" ] && echo "present" || echo "missing"; }
+          echo "RESEND_API_KEY: $(has "$RESEND_API_KEY")"
+          echo "NEXT_PUBLIC_SITE_URL: $(has "$NEXT_PUBLIC_SITE_URL")"
+          echo "NEXT_PUBLIC_SUPABASE_URL: $(has "$NEXT_PUBLIC_SUPABASE_URL")"
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY: $(has "$NEXT_PUBLIC_SUPABASE_ANON_KEY")"
+          echo "SUPABASE_SERVICE_ROLE_KEY: $(has "$SUPABASE_SERVICE_ROLE_KEY")"
 
       - name: Build with OpenNext
         run: bunx opennextjs-cloudflare build
@@ -72,8 +99,8 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --env=dev
+          command: versions upload --env=development
 
       - name: Note
         run: |
-          echo "Preview subdomain is listed in Cloudflare Dashboard → Workers & Pages → lumiloops-oficial-dev → Settings → Domains & Routes (Preview URLs)."
+          echo "Preview subdomain is listed in Cloudflare Dashboard → Workers & Pages → lumiloops-oficial → Settings → Domains & Routes (Preview URLs)."

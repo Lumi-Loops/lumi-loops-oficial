@@ -17,7 +17,7 @@ vars = { SITE_NAME = "Lumi Loops" }
 # Development environment (local preview)
 # Load variables from .dev.vars file
 [env.development]
-name = "lumiloops-oficial-dev"
+name = "lumiloops-oficial"
 vars = { ENV = "development" }
 # Secrets are loaded from .dev.vars in development
 # Example in .dev.vars:
